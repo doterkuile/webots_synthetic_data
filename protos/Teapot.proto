@@ -1,0 +1,24 @@
+ #VRML_SIM R2021a utf8
+ PROTO Teapot [
+
+  field SFVec3f    translation  0 0 0
+  field SFRotation rotation     0 1 0 0
+
+
+  ]
+{
+  Solid {
+      translation IS translation
+      rotation IS rotation
+      
+      children [
+      DEF MESH Shape {
+        geometry Mesh {
+          url [
+            "/home/david/voxblox_ws/results/teapot_4_segments/gsm_segment_mesh_label_5.stl"
+          ]
+        }
+      }
+      ]
+  }
+}
