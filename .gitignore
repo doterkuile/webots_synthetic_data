@@ -1,0 +1,3 @@
+controllers/build/*
+controllers/controllers
+controllers/*.user
