@@ -3,8 +3,8 @@ WorldInfo {
   coordinateSystem "NUE"
 }
 Viewpoint {
-  orientation 0.29970553281465906 0.9091865781066367 0.2890611696354697 4.632515787064084
-  position -1.452964421584459 0.986265552404639 0.3849393033382949
+  orientation 0.13089764571174867 -0.9843278730123943 -0.11817125182554783 4.85186218015324
+  position 1.1652803679746497 0.4803584369682298 0.32064276853097806
 }
 TexturedBackground {
 }
@@ -13,37 +13,14 @@ TexturedBackgroundLight {
 RectangleArena {
   translation 0 -0.1 0
 }
-Solid {
-  translation 0.0183964 0.0444626 0.131472
-  rotation -0.030707783435587735 -0.1760303286231225 -0.9839056638932965 -2.7092424648689852
-  children [
-    DEF MESH Shape {
-      geometry Mesh {
-        url [
-          "/home/david/voxblox_ws/results/teapot_4_segments/gsm_segment_mesh_label_5.stl"
-        ]
-      }
-    }
-  ]
+DEF CAMERA_1 image_camera {
 }
-Teapot {
-  translation 0 0.17 0
-}
-Robot {
-  children [
-    Camera {
-      translation 0.14 0 0
-      boundingObject Shape {
-      }
-      recognitionColors [
-        0 0 0
-      ]
-      recognition Recognition {
-        segmentation TRUE
-      }
-    }
-  ]
-  controller "ros"
-}
-E-puck {
+DEF TEAPOT_1 Teapot {
+  translation 0.0 0.0 0
+  rotation 1.0 0.0 0.0 0.0
+  appearance PBRAppearance {
+    baseColor 0.7 0.7 0.6
+    roughness 1
+    emissiveColor 1 0 0
+  }
 }

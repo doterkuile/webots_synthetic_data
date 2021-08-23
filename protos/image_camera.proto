@@ -1,0 +1,117 @@
+ #VRML_SIM R2021a utf8
+ PROTO image_camera [
+  field SFFloat  fieldOfView            0.7854  # [0, pi]
+  field SFInt32  width                  960      # [0, inf)
+  field SFInt32  height                 540      # [0, inf)
+  field SFBool   spherical              FALSE   # {TRUE, FALSE}
+  field SFFloat  near                   0.01    # [0, inf)
+  field SFFloat  far                    0.0     # [0, inf)
+  field SFFloat  exposure               1    # [near, inf)
+  field SFBool   antiAliasing           FALSE   # {TRUE, FALSE}
+  field SFFloat  ambientOcclusionRadius 0       # [0, inf)
+  field SFFloat  bloomThreshold         -1.0    # [-1, inf)
+  field SFFloat  motionBlur             0.0     # [0, inf)
+  field SFFloat  noise                  0.0     # [0, 1]
+  field SFString noiseMaskUrl           "" 
+  field SFBool   supervisor             TRUE     # any string
+  field SFNode   lens                   NULL    # {Lens, PROTO}
+  field SFNode   focus                  NULL    # {Focus, PROTO}
+  field SFNode   zoom                   NULL    # {Zoom, PROTO}
+  # field SFNode   recognition            Recognition{segmentation TRUE}   # {Recognition, PROTO}
+  field SFNode   lensFlare              NULL    # {LensFlare, PROTO}
+  field SFVec3f    translation  0 0 0
+  field SFRotation rotation     0 1 0 0 
+  field SFString           controller                   "<extern>" # Is `Robot.controller`.
+  field MFString           controllerArgs               []   
+
+
+  ]
+{
+DEF CAMERA_1 Robot {
+  translation IS translation
+  rotation IS rotation
+  children [
+  Camera {
+        translation 0 0 0 
+        rotation 0 1 0 3.14159
+        
+        children [
+            Transform {
+              translation 0 0 0
+              rotation  1, 0, 0, -1.5707963
+              
+              children [
+                Shape {
+                    appearance PBRAppearance {
+                                    roughness 1
+                                    metalness 0
+                                    }
+       
+                    geometry Cylinder {
+                                    height 0.02
+                                    radius 0.01
+                                    }
+                }
+               Transform {
+                  # translation 0 0 -0.010
+                  translation 0 0.01 0
+                  rotation  1, 0, 0, 0 #1.5707963
+                  
+                  children [
+                    Shape {
+                      appearance Appearance {
+                        material Material {diffuseColor 0.7 0 0}
+                        }
+               
+                      geometry Cylinder {
+                        height 0.01
+                        radius 0.0095
+                        }
+                      }
+        
+                    ]
+                 }
+          
+              ]
+              }
+            
+            
+            
+            ]
+          fieldOfView IS fieldOfView
+          width IS width
+          height IS height
+          spherical IS spherical
+          near IS near
+          far IS far
+          exposure IS exposure
+          antiAliasing IS antiAliasing
+          ambientOcclusionRadius IS ambientOcclusionRadius
+          bloomThreshold IS bloomThreshold
+          motionBlur IS motionBlur
+          noise IS noise
+          noiseMaskUrl IS noiseMaskUrl 
+          lens IS lens
+          focus IS focus
+          zoom IS zoom
+          recognition Recognition {
+                    frameColor 0.929412 0.831373 0
+                    frameThickness 3
+                    segmentation TRUE
+                    }
+          lensFlare IS lensFlare
+        }
+  Display {
+  name "segmented image display"
+  width IS width
+  height IS height
+  }
+  ]
+        
+  controller IS controller
+  controllerArgs IS controllerArgs
+  supervisor IS supervisor
+
+        
+    }
+}

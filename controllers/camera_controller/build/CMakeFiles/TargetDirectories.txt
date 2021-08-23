@@ -1,0 +1,3 @@
+/home/david/webots/synthetic_data/controllers/build/CMakeFiles/rebuild_cache.dir
+/home/david/webots/synthetic_data/controllers/build/CMakeFiles/controllers.dir
+/home/david/webots/synthetic_data/controllers/build/CMakeFiles/edit_cache.dir

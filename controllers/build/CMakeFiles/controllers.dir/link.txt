@@ -1,1 +1,0 @@
-/usr/bin/c++  -g  -rdynamic CMakeFiles/controllers.dir/camera_controller.cpp.o  -o controllers  -L/usr/local/webots/lib/controller -Wl,-rpath,/usr/local/webots/lib/controller -lController -lCppController 

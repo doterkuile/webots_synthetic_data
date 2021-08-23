@@ -1,0 +1,3 @@
+/home/david/webots/synthetic_data/controllers/camera_controller/CMakeFiles/rebuild_cache.dir
+/home/david/webots/synthetic_data/controllers/camera_controller/CMakeFiles/camera_controller.dir
+/home/david/webots/synthetic_data/controllers/camera_controller/CMakeFiles/edit_cache.dir

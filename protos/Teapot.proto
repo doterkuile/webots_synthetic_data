@@ -3,14 +3,17 @@
 
   field SFVec3f    translation  0 0 0
   field SFRotation rotation     0 1 0 0
+  field MFColor  recognitionColors [ 0.59 0.75 0.28 ]
+  field SFNode   appearance PBRAppearance{}
 
 
   ]
 {
-  Solid {
+DEF TEAPOT_1 Solid {
       translation IS translation
       rotation IS rotation
-      
+      recognitionColors IS recognitionColors
+
       children [
       DEF MESH Shape {
         geometry Mesh {
@@ -18,7 +21,10 @@
             "/home/david/voxblox_ws/results/teapot_4_segments/gsm_segment_mesh_label_5.stl"
           ]
         }
+        appearance IS appearance
       }
       ]
+
   }
+  
 }
