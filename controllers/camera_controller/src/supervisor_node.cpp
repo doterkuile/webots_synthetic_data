@@ -37,9 +37,37 @@ Supervisor::~Supervisor()
 
 void Supervisor::parseConfig(const std::string &filename)
 {
-//    YAML::Node basenode = YAML::LoadFile(filename);
-////    std::get<0>(object_position_limit_)[0]
-//            auto test = basenode["object_position_limit"]["min"][0].as<double>();
+    YAML::Node basenode = YAML::LoadFile(filename);
+    std::get<0>(object_position_limit_) = eVector3(basenode["object_position_limit"]["min"][0].as<double>(),
+                                                   basenode["object_position_limit"]["min"][1].as<double>(),
+                                                   basenode["object_position_limit"]["min"][2].as<double>()
+                                                   );
+
+    std::get<1>(object_position_limit_) = eVector3(basenode["object_position_limit"]["max"][0].as<double>(),
+                                                   basenode["object_position_limit"]["max"][1].as<double>(),
+                                                   basenode["object_position_limit"]["max"][2].as<double>()
+                                                   );
+    std::get<0>(object_orientation_limit_) = eVector3(basenode["object_orientation_limit"]["min"][0].as<double>(),
+                                                      basenode["object_orientation_limit"]["min"][1].as<double>(),
+                                                      basenode["object_orientation_limit"]["min"][2].as<double>()
+                                                      );
+
+    std::get<1>(object_orientation_limit_) = eVector3(basenode["object_orientation_limit"]["max"][0].as<double>(),
+                                                      basenode["object_orientation_limit"]["max"][1].as<double>(),
+                                                      basenode["object_orientation_limit"]["max"][2].as<double>()
+                                                      );
+
+    std::get<0>(camera_distance_limit_) = basenode["camera_distance_limit"]["min"].as<double>();
+    std::get<1>(camera_distance_limit_) = basenode["camera_distance_limit"]["max"].as<double>();
+
+    std::get<0>(camera_orientation_limit_) = eVector2(basenode["camera_orientation_limit"]["min"][0].as<double>(),
+                                                      basenode["camera_orientation_limit"]["min"][1].as<double>()
+                                                      );
+
+    std::get<1>(camera_orientation_limit_) = eVector2(basenode["camera_orientation_limit"]["max"][0].as<double>(),
+                                                      basenode["camera_orientation_limit"]["max"][1].as<double>()
+                                                      );
+
     return;
 //    YAML::LoadFile("/home/david/webots/synthetic_data/controllers/camera_controller/config");
 }

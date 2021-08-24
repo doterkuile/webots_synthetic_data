@@ -28,7 +28,7 @@
 //std::uniform_real_distribution<double> distribution1 (minVector[0],maxVector[0]);
 int main() {
 
-    std::string config_file = "/home/david/webots/synthetic_data/controllers/camera_controller/config";
+    std::string config_file = "/home/david/webots/synthetic_data/controllers/camera_controller/config/data_generator.yaml";
 
     Supervisor supervisor_node(new webots::Supervisor(), TIME_STEP, config_file);
 
