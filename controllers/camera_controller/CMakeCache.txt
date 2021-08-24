@@ -221,6 +221,9 @@ camera_controller_BINARY_DIR:STATIC=/home/david/webots/synthetic_data/controller
 //Value Computed by CMake
 camera_controller_SOURCE_DIR:STATIC=/home/david/webots/synthetic_data/controllers/camera_controller
 
+//The directory containing a CMake configuration file for yaml-cpp.
+yaml-cpp_DIR:PATH=/usr/lib/x86_64-linux-gnu/cmake/yaml-cpp
+
 
 ########################
 # INTERNAL cache entries

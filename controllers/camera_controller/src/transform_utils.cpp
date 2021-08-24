@@ -11,26 +11,33 @@ void toField(const double value, double *field)
 
 void toField(const eVector2 &vector, double *field)
 {
-    for(int ii{0}; ii < 2; ii++)
+    for(int ii{0}; ii < vector.size(); ii++)
     {
     }
 }
 void toField(const eVector3 &vector, double *field)
 {
-    for(int ii{0}; ii < 3; ii++)
+    for(int ii{0}; ii < vector.size(); ii++)
     {
         field[ii] = vector[ii];
     }
 }
 
-
-
-void fromTranslationField(const double *field, eVector3 &vector)
+void toField(const eMatrixHom &matrix, double *position, double *orientation)
 {
-    std::cout << "hoi" ;
-    for(int ii{0}; ii <3; ii++)
+    eVector3 t = matrix.translation();
+    eMatrixRot R = matrix.rotation();
+    toField(t, position);
+    rotMatrixtoAxisAngles(R, orientation);
+}
+
+
+
+void fromTranslationField(const webots::Field *field, eVector3 &vector)
+{
+    for(int ii{0}; ii <vector.size(); ii++)
     {
-        vector[ii] = field[ii];
+        vector[ii] = field->getSFVec3f()[ii];
     }
 }
 
@@ -44,6 +51,8 @@ void fromRotationField(const double *field, eQuaternion &vector)
 
     }
 }
+
+
 
 
 

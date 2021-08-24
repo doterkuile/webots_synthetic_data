@@ -1,0 +1,2 @@
+- setup-file:
+    local-name: /home/david/webots/synthetic_data/controllers/camera_controller/install/setup.sh

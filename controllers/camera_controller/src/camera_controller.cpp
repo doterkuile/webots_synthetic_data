@@ -16,14 +16,21 @@
 
 #include "camera_utils.hpp"
 #include "supervisor_node.hpp"
+#include <time.h>
 
 
 #define TIME_STEP 64
 
+// Generate random seed
+//std::mt19937 Supervisor::Mersenne_{
+//    static_cast<std::mt19937::result_type>(std::time(nullptr))};
 
+//std::uniform_real_distribution<double> distribution1 (minVector[0],maxVector[0]);
 int main() {
 
-    Supervisor supervisor_node(new webots::Supervisor(), TIME_STEP);
+    std::string config_file = "/home/david/webots/synthetic_data/controllers/camera_controller/config";
+
+    Supervisor supervisor_node(new webots::Supervisor(), TIME_STEP, config_file);
 
     supervisor_node.stepTime();
 
@@ -37,7 +44,8 @@ int main() {
     eVector2 angles = eVector2(M_PI_4, M_PI_4/2.0);
 
     supervisor_node.moveObject(object, newposition, rotation);
-    supervisor_node.moveCamera(newposition, distance, angles);
+    supervisor_node.focusCamera(object);
+//    supervisor_node.moveCamera(newposition, distance, angles);
     supervisor_node.stepTime();
 
     supervisor_node.saveImages();

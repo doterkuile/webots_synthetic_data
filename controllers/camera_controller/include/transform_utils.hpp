@@ -17,13 +17,14 @@ void fromField(const double *field, eVector3 &vector);
 void fromField(const double *field, double &value);
 void toField(const eVector2 &vector, double *field);
 void toField(const eVector3 &vector, double *field);
+void toField(const eMatrixHom &matrix, double *position, double *orientation);
 void toField(const double value, double *field);
 
 
 
 void toTranslationField(const eVector3 &vector, webots::Field *field);
 
-void fromTranslationField(const double *field, eVector3 &vector);
+void fromTranslationField(const webots::Field *field, eVector3 &vector);
 
 
 void toRotationField(const eQuaternion &vector, webots::Field *field);

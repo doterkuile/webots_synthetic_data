@@ -12,13 +12,14 @@ set(SOURCES ${C_SOURCES} ${CPP_SOURCES})
 set(WEBOTS_HOME "/usr/local/webots/")
 # Link with the Webots controller library.
 find_package(Eigen3 REQUIRED)
+find_package(yaml-cpp REQUIRED)
 link_directories($ENV{WEBOTS_HOME}/lib/controller)
 set (LIBRARIES ${CMAKE_SHARED_LIBRARY_PREFIX}Controller${CMAKE_SHARED_LIBRARY_SUFFIX}; ${CMAKE_SHARED_LIBRARY_PREFIX}CppController${CMAKE_SHARED_LIBRARY_SUFFIX})
-include_directories($ENV{WEBOTS_HOME}/include/controller/c $ENV{WEBOTS_HOME}/include/controller/cpp include ${Eigen_INCLUDE_DIRS})
+include_directories($ENV{WEBOTS_HOME}/include/controller/c $ENV{WEBOTS_HOME}/include/controller/cpp include ${Eigen_INCLUDE_DIRS} ${yaml-cpp_INCLUDE_DIRS})
 
 # Setup the target executable.
 add_executable(${PROJECT} ${SOURCES})
-target_link_libraries(${PROJECT} ${LIBRARIES})
+target_link_libraries(${PROJECT} ${LIBRARIES} yaml-cpp)
 get_target_property(OUT ${PROJECT} LINK_LIBRARIES)
 message(STATUS ${OUT})
 

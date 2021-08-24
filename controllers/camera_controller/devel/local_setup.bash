@@ -1,0 +1,1 @@
+/home/david/webots/synthetic_data/controllers/camera_controller/devel/.private/catkin_tools_prebuild/local_setup.bash

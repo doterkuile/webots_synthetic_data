@@ -1,0 +1,12 @@
+Symlinking /home/david/webots/synthetic_data/controllers/camera_controller/devel/./env.sh
+Symlinking /home/david/webots/synthetic_data/controllers/camera_controller/devel/./local_setup.sh
+Symlinking /home/david/webots/synthetic_data/controllers/camera_controller/devel/./setup.sh
+Symlinking /home/david/webots/synthetic_data/controllers/camera_controller/devel/./setup.zsh
+Symlinking /home/david/webots/synthetic_data/controllers/camera_controller/devel/./_setup_util.py
+Symlinking /home/david/webots/synthetic_data/controllers/camera_controller/devel/./local_setup.zsh
+Symlinking /home/david/webots/synthetic_data/controllers/camera_controller/devel/./cmake.lock
+Symlinking /home/david/webots/synthetic_data/controllers/camera_controller/devel/./setup.bash
+Symlinking /home/david/webots/synthetic_data/controllers/camera_controller/devel/./local_setup.bash
+Symlinking /home/david/webots/synthetic_data/controllers/camera_controller/devel/lib/pkgconfig/catkin_tools_prebuild.pc
+Symlinking /home/david/webots/synthetic_data/controllers/camera_controller/devel/share/catkin_tools_prebuild/cmake/catkin_tools_prebuildConfig-version.cmake
+Symlinking /home/david/webots/synthetic_data/controllers/camera_controller/devel/share/catkin_tools_prebuild/cmake/catkin_tools_prebuildConfig.cmake
