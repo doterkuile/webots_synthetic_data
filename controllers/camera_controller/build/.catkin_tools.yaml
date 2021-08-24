@@ -1,6 +1,0 @@
-devel_space: /home/david/webots/synthetic_data/controllers/camera_controller/devel
-install: false
-install_space: /home/david/webots/synthetic_data/controllers/camera_controller/install
-profile: default
-source_space: /home/david/webots/synthetic_data/controllers/camera_controller/src
-workspace: /home/david/webots/synthetic_data/controllers/camera_controller
