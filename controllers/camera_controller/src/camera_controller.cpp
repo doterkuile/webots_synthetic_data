@@ -44,7 +44,7 @@ int main() {
     eVector2 angles = eVector2(M_PI_4, M_PI_4/2.0);
 
     supervisor_node.moveObject(object, newposition, rotation);
-    supervisor_node.focusCamera(object);
+    supervisor_node.focusCamera(object, distance, angles);
 //    supervisor_node.moveCamera(newposition, distance, angles);
     supervisor_node.stepTime();
 

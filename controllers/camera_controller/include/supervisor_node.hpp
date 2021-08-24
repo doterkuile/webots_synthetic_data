@@ -23,7 +23,7 @@ public:
     int stepTime();
     webots::Node* getObject(const std::string &object_name);
     bool moveObject(webots::Node* object, double translation[3], double rotation[4]);
-    void focusCamera(webots::Node* object);
+    void focusCamera(webots::Node* object, const double camera_distance, const eVector2 &camera_angles);
     void moveCamera(double position[3], double distance, eVector2 angles);
     void parseConfig(const std::string &filename);
 
