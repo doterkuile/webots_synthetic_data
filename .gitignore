@@ -2,6 +2,7 @@ controllers/build/*
 controllers/camera_controller/build
 controllers/camera_controller/devel
 controllers/camera_controller/logs
+controllers/camera_controller/controller
 controllers/controllers
 controllers/*.user
 protos/.*
