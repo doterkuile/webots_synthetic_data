@@ -16,7 +16,8 @@ time_step_(time_step)
 
 Supervisor::Supervisor(webots::Supervisor *supervisor, int time_step, const std::string &config_file):
 supervisor_(supervisor),
-time_step_(time_step)
+time_step_(time_step),
+image_count_(0)
 {
        camera_ = supervisor_->getCamera("camera");
        camera_node_ = supervisor_->getFromDef("CAMERA_1");
@@ -68,8 +69,29 @@ void Supervisor::parseConfig(const std::string &filename)
                                                       basenode["camera_orientation_limit"]["max"][1].as<double>()
                                                       );
 
+    synthetic_image_file_ = basenode["synthetic_image_urls"].as<std::string>();
+    image_folder_ = basenode["saved_image_folder"].as<std::string>();
+    parseTextureFile(synthetic_image_file_);
+
     return;
 //    YAML::LoadFile("/home/david/webots/synthetic_data/controllers/camera_controller/config");
+}
+
+
+void Supervisor::parseTextureFile(const std::string &filename)
+{
+
+    std::ifstream inFile;
+    std::string tex_url;
+
+    inFile.open(filename.c_str());
+
+    while (inFile >> tex_url)
+    {
+        texture_vector.push_back(tex_url);
+    }
+
+
 }
 
 int Supervisor::stepTime()
@@ -77,10 +99,17 @@ int Supervisor::stepTime()
     supervisor_->step(time_step_);
 }
 
+int Supervisor::getImageCount()
+{
+    return image_count_;
+}
+
 void Supervisor::saveImages()
 {
-    camera_utils::saveImages(camera_, display_, destination_folder_);
+    camera_utils::saveImages(camera_, display_, image_folder_, image_count_);
+    image_count_++;
 
+    return;
 }
 
 webots::Node* Supervisor::getObject(const std::string &object_name)
@@ -89,6 +118,37 @@ webots::Node* Supervisor::getObject(const std::string &object_name)
 
     return object;
 }
+
+
+bool Supervisor::moveObject(webots::Node* object)
+{
+    if(!object)
+    {
+        return false;
+    }
+
+    double translation[3];
+    double orientation[4];
+    for(int ii{0}; ii < 3; ii++)
+    {
+        std::uniform_real_distribution<double> distribution (std::get<0>(object_position_limit_)[ii],std::get<1>(object_position_limit_)[ii]);
+        translation[ii] = distribution(Mersenne_);
+
+    }
+    eVector3 rpy;
+    for(int ii{0}; ii < 3; ii++)
+    {
+        std::uniform_real_distribution<double> distribution (std::get<0>(object_orientation_limit_)[ii],std::get<1>(object_orientation_limit_)[ii]);
+        rpy[ii] = distribution(Mersenne_);
+
+    }
+    transform_utils::fromRollPitchYawtoAxisAngles(rpy, orientation);
+
+    this->moveObject(object, translation, orientation);
+
+    return true;
+}
+
 
 
 bool Supervisor::moveObject(webots::Node* object, double translation[3], double rotation[4])
@@ -111,6 +171,29 @@ bool Supervisor::moveObject(webots::Node* object, double translation[3], double 
 
 //    position->setSFVec3f(translation);
 }
+
+void Supervisor::focusCamera(webots::Node* object)
+{
+    eVector2 camera_angles;
+    double camera_distance;
+
+    std::uniform_real_distribution<double> distribution1 (std::get<0>(camera_distance_limit_),std::get<1>(camera_distance_limit_));
+    camera_distance = distribution1(Mersenne_);
+
+    for(int ii{0}; ii < 2; ii++)
+    {
+        std::uniform_real_distribution<double> distribution2 (std::get<0>(camera_orientation_limit_)[ii],std::get<1>(camera_orientation_limit_)[ii]);
+        camera_angles[ii] = distribution2(Mersenne_);
+
+    }
+
+    this->focusCamera(object, camera_distance, camera_angles);
+
+    return;
+
+
+}
+
 
 void Supervisor::focusCamera(webots::Node* object, const double camera_distance, const eVector2 &camera_angles)
 {
@@ -159,6 +242,21 @@ void Supervisor::focusCamera(webots::Node* object, const double camera_distance,
     return;
 
 }
+
+
+void Supervisor::setObjectTexture(webots::Node* object)
+{
+
+}
+
+void Supervisor::setObjectTexture(webots::Node* object, std::string &texture)
+{
+
+    object->getField("BaseColorMap")->setSFString(texture);
+
+}
+
+
 
 void Supervisor::moveCamera(double position[3], double distance, eVector2 angles)
 {

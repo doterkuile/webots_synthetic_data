@@ -35,6 +35,8 @@ void fromSphericaltoCartesian(const double r, const double phi, const double the
 
 void fromQuaterniontoAxisAngles(const eQuaternion &q, double *axisAngle);
 
+void fromRollPitchYawtoAxisAngles(const eVector3 &rpy, double *axisAngle);
+
 void rotMatrixtoAxisAngles(const eMatrixRot &R, double *axisAngle);
 
 }

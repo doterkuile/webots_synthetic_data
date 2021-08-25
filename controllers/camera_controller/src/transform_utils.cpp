@@ -63,6 +63,8 @@ void fromSphericaltoCartesian(const double r, const double phi, const double the
     vector.x() = r * sin(phi) * cos(theta);
     vector.y() = r * sin(phi) * sin(theta);
     vector.z() = r * cos(phi);
+
+    return;
 }
 
 void fromQuaterniontoAxisAngles(const eQuaternion &q, double *axisAngle)
@@ -74,6 +76,19 @@ void fromQuaterniontoAxisAngles(const eQuaternion &q, double *axisAngle)
     axisAngle[3] = 2 * std::acos(q.w());
 
 
+    return;
+}
+
+void fromRollPitchYawtoAxisAngles(const eVector3 &rpy, double *axisAngle)
+{
+
+    eQuaternion q2 = Eigen::AngleAxisd(rpy[0], eVector3::UnitX())
+                   * Eigen::AngleAxisd(rpy[1], eVector3::UnitY())
+                   * Eigen::AngleAxisd(rpy[2], eVector3::UnitZ());
+
+    fromQuaterniontoAxisAngles(q2, axisAngle);
+
+    return;
 
 }
 
@@ -86,6 +101,7 @@ void rotMatrixtoAxisAngles(const eMatrixRot &R, double *axisAngle)
 
     axisAngle[3] = X.angle();
 
+    return;
 }
 
 } // close namespace

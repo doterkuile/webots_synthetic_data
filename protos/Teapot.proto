@@ -5,7 +5,7 @@
   field SFRotation rotation     0 1 0 0
   field MFColor  recognitionColors [ 0.59 0.75 0.28 ]
   field SFNode   appearance PBRAppearance{}
-
+  # field MFString   texture ""
 
   ]
 {
@@ -14,7 +14,7 @@ DEF TEAPOT_1 Solid {
       rotation IS rotation
       recognitionColors IS recognitionColors
 
-      children [
+  children [
       DEF MESH Shape {
         geometry Mesh {
           url [

@@ -16,14 +16,14 @@
 
 #include "camera_utils.hpp"
 #include "supervisor_node.hpp"
-#include <time.h>
+#include <ctime>
 
 
 #define TIME_STEP 64
 
 // Generate random seed
-//std::mt19937 Supervisor::Mersenne_{
-//    static_cast<std::mt19937::result_type>(std::time(nullptr))};
+std::mt19937 Supervisor::Mersenne_{
+    static_cast<std::mt19937::result_type>(std::time(nullptr))};
 
 //std::uniform_real_distribution<double> distribution1 (minVector[0],maxVector[0]);
 int main() {
@@ -34,23 +34,28 @@ int main() {
 
     supervisor_node.stepTime();
 
-//    supervisor_node.saveImages();
-    double newposition[3]  = {0.5, 0.0, 0.0};
-    double rotation[4]     = {1.0, 0.0, 0.0, 0.0};
-//    supervisor_node.saveImages();
+    std::string texture = "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.LjRrEK0kHLMFm-MZZhbyaQHaHa%26pid%3DApi&f=1";
+
+    while(supervisor_node.getImageCount() < 20)
+    {
+
     std::string object_name("TEAPOT_1");
     webots::Node* object = supervisor_node.getObject(object_name);
     double distance{1.0};
     eVector2 angles = eVector2(M_PI_4, M_PI_4/2.0);
 
-    supervisor_node.moveObject(object, newposition, rotation);
-    supervisor_node.focusCamera(object, distance, angles);
+    object->getField("texture")->setMFString(0, texture);
+    supervisor_node.moveObject(object);
+//    supervisor_node.moveObject(object, newposition, rotation);
+    supervisor_node.focusCamera(object);
+//    supervisor_node.focusCamera(object, distance, angles);
 //    supervisor_node.moveCamera(newposition, distance, angles);
     supervisor_node.stepTime();
 
     supervisor_node.saveImages();
-    supervisor_node.stepTime();
-    supervisor_node.saveImages();
+    }
+//    supervisor_node.stepTime();
+//    supervisor_node.saveImages();
 
 
 

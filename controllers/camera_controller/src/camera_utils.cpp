@@ -9,12 +9,12 @@ void turnCameraOn(webots::Camera* camera, int time_step)
     camera->enableRecognitionSegmentation();
 }
 
-void saveImages(webots::Camera* camera, webots::Display* display, std::string destinationFolder)
+void saveImages(webots::Camera* camera, webots::Display* display, std::string destinationFolder, int image_count)
 {
     if(camera->isRecognitionSegmentationEnabled() && camera->hasRecognition() && camera->getRecognitionSamplingPeriod() > 0 )
     {
-        std::string filenamesegment = destinationFolder + "testsegmentationimage.jpg";
-        std::string filename = destinationFolder + "testimage.jpg";
+        std::string filenamesegment = destinationFolder + "segmentationimage_" + std::to_string(image_count) + ".jpg";
+        std::string filename = destinationFolder + "image_" + std::to_string(image_count) + ".jpg";
 
         auto image1 = camera->getRecognitionSegmentationImage();
         if( image1)
