@@ -3,8 +3,8 @@ WorldInfo {
   coordinateSystem "NUE"
 }
 Viewpoint {
-  orientation -0.08491045291629565 0.9152638138172847 0.39380498486203613 3.535113135496763
-  position -0.2954634658997566 1.0730173081006373 -0.8344179490793822
+  orientation 0.26979543100649717 -0.867101603850385 -0.41874244352359163 3.535870715053545
+  position 0.18458795331203726 0.8381793912394556 -0.5796467468309009
 }
 TexturedBackground {
 }
@@ -15,12 +15,9 @@ RectangleArena {
 }
 DEF CAMERA_1 image_camera {
 }
-DEF TEAPOT_1 Teapot {
-  translation 0.0 0.0 0
-  rotation 1.0 0.0 0.0 0.0
-  appearance PBRAppearance {
-    baseColor 0.7 0.7 0.6
-    roughness 1
-    emissiveColor 1 0 0
-  }
+
+
+DEF TEAPOT_1 object_1 {
+  translation 0.02 0 0
+  rotation 1 0 0 0
 }

@@ -23,7 +23,9 @@ public:
 
     void saveImages();
     int stepTime();
-    int getImageCount();
+    bool checkImageCount();
+
+
     webots::Node* getObject(const std::string &object_name);
     bool moveObject(webots::Node* object);
     bool moveObject(webots::Node* object, double translation[3], double rotation[4]);
@@ -55,7 +57,8 @@ private:
     std::string image_folder_;
     std::string synthetic_image_file_;
     int image_count_;
-    std::vector<std::string> texture_vector;
+    int dataset_size_;
+    std::vector<std::string> texture_vector_;
 
 
 

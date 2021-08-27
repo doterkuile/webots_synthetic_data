@@ -6,3 +6,5 @@ controllers/camera_controller/controller
 controllers/controllers
 controllers/*.user
 protos/.*
+images/.*
+!images/.gitignore

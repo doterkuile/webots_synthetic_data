@@ -1,0 +1,34 @@
+#VRML_SIM R2021a utf8
+ PROTO test_2 [
+
+  field SFVec3f    translation  0 0 0
+  field SFRotation rotation     0 1 0 0
+  field MFColor  recognitionColors [ 0.59 0.75 0.28 ]
+  # field SFNode   appearance PBRAppearance{}
+  # field MFString   texture NULL
+
+  ]
+{
+DEF test_2 Solid {
+      translation IS translation
+      rotation IS rotation
+      recognitionColors IS recognitionColors
+
+  children [
+          Shape {
+      appearance PBRAppearance {
+        baseColorMap ImageTexture {
+          url [
+            "https://static.vecteezy.com/system/resources/previews/000/665/288/original/vector-geometric-colorful-hexagon-pattern.jpg"
+          ]
+        }
+      }
+      geometry Mesh {
+          url [             "/home/david/voxblox_ws/results/teapot_4_segments/gsm_segment_mesh_label_5.stl"]
+          }
+        }
+      ]
+
+  }
+  
+}

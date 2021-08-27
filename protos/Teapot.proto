@@ -5,7 +5,7 @@
   field SFRotation rotation     0 1 0 0
   field MFColor  recognitionColors [ 0.59 0.75 0.28 ]
   field SFNode   appearance PBRAppearance{}
-  # field MFString   texture ""
+  # field MFString   texture NULL
 
   ]
 {
@@ -16,14 +16,32 @@ DEF TEAPOT_1 Solid {
 
   children [
       DEF MESH Shape {
+      
+
         geometry Mesh {
           url [
             "/home/david/voxblox_ws/results/teapot_4_segments/gsm_segment_mesh_label_5.stl"
           ]
         }
+        
         appearance IS appearance
-      }
+        
+             # appearance PBRAppearance {
+    # baseColor 0 1 1
+    # baseColorMap ImageTexture {
+      # url [
+        # "https://static.vecteezy.com/system/resources/previews/000/665/288/original/vector-geometric-colorful-hexagon-pattern.jpg"
+      # ]
+      # repeatS FALSE
+      # filtering 1
+    # }
+  # }
+        
+        }
+
+      
       ]
+   
 
   }
   

@@ -48,12 +48,12 @@ void Supervisor::parseConfig(const std::string &filename)
                                                    basenode["object_position_limit"]["max"][1].as<double>(),
                                                    basenode["object_position_limit"]["max"][2].as<double>()
                                                    );
-    std::get<0>(object_orientation_limit_) = eVector3(basenode["object_orientation_limit"]["min"][0].as<double>(),
+    std::get<0>(object_orientation_limit_) =  M_PI * eVector3(basenode["object_orientation_limit"]["min"][0].as<double>(),
                                                       basenode["object_orientation_limit"]["min"][1].as<double>(),
                                                       basenode["object_orientation_limit"]["min"][2].as<double>()
                                                       );
 
-    std::get<1>(object_orientation_limit_) = eVector3(basenode["object_orientation_limit"]["max"][0].as<double>(),
+    std::get<1>(object_orientation_limit_) = M_PI * eVector3(basenode["object_orientation_limit"]["max"][0].as<double>(),
                                                       basenode["object_orientation_limit"]["max"][1].as<double>(),
                                                       basenode["object_orientation_limit"]["max"][2].as<double>()
                                                       );
@@ -61,16 +61,17 @@ void Supervisor::parseConfig(const std::string &filename)
     std::get<0>(camera_distance_limit_) = basenode["camera_distance_limit"]["min"].as<double>();
     std::get<1>(camera_distance_limit_) = basenode["camera_distance_limit"]["max"].as<double>();
 
-    std::get<0>(camera_orientation_limit_) = eVector2(basenode["camera_orientation_limit"]["min"][0].as<double>(),
+    std::get<0>(camera_orientation_limit_) = M_PI * eVector2(basenode["camera_orientation_limit"]["min"][0].as<double>(),
                                                       basenode["camera_orientation_limit"]["min"][1].as<double>()
                                                       );
 
-    std::get<1>(camera_orientation_limit_) = eVector2(basenode["camera_orientation_limit"]["max"][0].as<double>(),
+    std::get<1>(camera_orientation_limit_) = M_PI * eVector2(basenode["camera_orientation_limit"]["max"][0].as<double>(),
                                                       basenode["camera_orientation_limit"]["max"][1].as<double>()
                                                       );
 
     synthetic_image_file_ = basenode["synthetic_image_urls"].as<std::string>();
     image_folder_ = basenode["saved_image_folder"].as<std::string>();
+    dataset_size_ = basenode["dataset_size"].as<int>();
     parseTextureFile(synthetic_image_file_);
 
     return;
@@ -88,7 +89,7 @@ void Supervisor::parseTextureFile(const std::string &filename)
 
     while (inFile >> tex_url)
     {
-        texture_vector.push_back(tex_url);
+        texture_vector_.push_back(tex_url);
     }
 
 
@@ -99,15 +100,18 @@ int Supervisor::stepTime()
     supervisor_->step(time_step_);
 }
 
-int Supervisor::getImageCount()
+bool Supervisor::checkImageCount()
 {
-    return image_count_;
+    return image_count_ < dataset_size_;
 }
 
 void Supervisor::saveImages()
 {
-    camera_utils::saveImages(camera_, display_, image_folder_, image_count_);
-    image_count_++;
+    if(camera_utils::saveImages(camera_, display_, image_folder_, image_count_))
+    {
+        image_count_++;
+
+    }
 
     return;
 }
@@ -246,13 +250,17 @@ void Supervisor::focusCamera(webots::Node* object, const double camera_distance,
 
 void Supervisor::setObjectTexture(webots::Node* object)
 {
+    std::uniform_int_distribution<int> distribution(0,texture_vector_.size());
+    int idx = distribution(Mersenne_);
+    std::string texture = texture_vector_[idx];
 
+    this->setObjectTexture(object, texture);
 }
 
 void Supervisor::setObjectTexture(webots::Node* object, std::string &texture)
 {
 
-    object->getField("BaseColorMap")->setSFString(texture);
+   object->getField("texture")->setMFString(0, texture);
 
 }
 
