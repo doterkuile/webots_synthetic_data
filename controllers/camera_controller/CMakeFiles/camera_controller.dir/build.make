@@ -140,6 +140,8 @@ camera_controller: CMakeFiles/camera_controller.dir/src/supervisor_node.cpp.o
 camera_controller: CMakeFiles/camera_controller.dir/src/transform_utils.cpp.o
 camera_controller: CMakeFiles/camera_controller.dir/build.make
 camera_controller: /usr/lib/x86_64-linux-gnu/libyaml-cpp.so.0.5.2
+camera_controller: /usr/lib/x86_64-linux-gnu/libboost_system.so
+camera_controller: /usr/lib/x86_64-linux-gnu/libboost_filesystem.so
 camera_controller: CMakeFiles/camera_controller.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/david/webots/synthetic_data/controllers/camera_controller/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Linking CXX executable camera_controller"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/camera_controller.dir/link.txt --verbose=$(VERBOSE)

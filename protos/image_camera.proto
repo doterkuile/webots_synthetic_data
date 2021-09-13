@@ -2,7 +2,7 @@
  PROTO image_camera [
   field SFFloat  fieldOfView            0.7854  # [0, pi]
   field SFInt32  width                  960      # [0, inf)
-  field SFInt32  height                 540      # [0, inf)
+  field SFInt32  height                 640      # [0, inf)
   field SFBool   spherical              FALSE   # {TRUE, FALSE}
   field SFFloat  near                   0.01    # [0, inf)
   field SFFloat  far                    0.0     # [0, inf)

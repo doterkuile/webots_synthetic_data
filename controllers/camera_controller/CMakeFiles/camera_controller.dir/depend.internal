@@ -4,6 +4,7 @@
 CMakeFiles/camera_controller.dir/src/camera_controller.cpp.o
  /home/david/webots/synthetic_data/controllers/camera_controller/src/camera_controller.cpp
  /usr/local/webots/include/controller/c/webots/camera_recognition_object.h
+ /usr/local/webots/include/controller/c/webots/contact_point.h
  /usr/local/webots/include/controller/c/webots/types.h
  /usr/local/webots/include/controller/cpp/webots/Camera.hpp
  /usr/local/webots/include/controller/cpp/webots/Device.hpp
@@ -21,6 +22,7 @@ CMakeFiles/camera_controller.dir/src/camera_controller.cpp.o
 CMakeFiles/camera_controller.dir/src/camera_utils.cpp.o
  /home/david/webots/synthetic_data/controllers/camera_controller/src/camera_utils.cpp
  /usr/local/webots/include/controller/c/webots/camera_recognition_object.h
+ /usr/local/webots/include/controller/c/webots/contact_point.h
  /usr/local/webots/include/controller/c/webots/types.h
  /usr/local/webots/include/controller/cpp/webots/Camera.hpp
  /usr/local/webots/include/controller/cpp/webots/Device.hpp
@@ -34,6 +36,7 @@ CMakeFiles/camera_controller.dir/src/camera_utils.cpp.o
  include/transform_utils.hpp
 CMakeFiles/camera_controller.dir/src/object.cpp.o
  /home/david/webots/synthetic_data/controllers/camera_controller/src/object.cpp
+ /usr/local/webots/include/controller/c/webots/contact_point.h
  /usr/local/webots/include/controller/c/webots/types.h
  /usr/local/webots/include/controller/cpp/webots/Field.hpp
  /usr/local/webots/include/controller/cpp/webots/Node.hpp
@@ -42,6 +45,7 @@ CMakeFiles/camera_controller.dir/src/object.cpp.o
 CMakeFiles/camera_controller.dir/src/supervisor_node.cpp.o
  /home/david/webots/synthetic_data/controllers/camera_controller/src/supervisor_node.cpp
  /usr/local/webots/include/controller/c/webots/camera_recognition_object.h
+ /usr/local/webots/include/controller/c/webots/contact_point.h
  /usr/local/webots/include/controller/c/webots/types.h
  /usr/local/webots/include/controller/cpp/webots/Camera.hpp
  /usr/local/webots/include/controller/cpp/webots/Device.hpp
@@ -58,6 +62,7 @@ CMakeFiles/camera_controller.dir/src/supervisor_node.cpp.o
  include/transform_utils.hpp
 CMakeFiles/camera_controller.dir/src/transform_utils.cpp.o
  /home/david/webots/synthetic_data/controllers/camera_controller/src/transform_utils.cpp
+ /usr/local/webots/include/controller/c/webots/contact_point.h
  /usr/local/webots/include/controller/c/webots/types.h
  /usr/local/webots/include/controller/cpp/webots/Field.hpp
  /usr/local/webots/include/controller/cpp/webots/Node.hpp

@@ -12,8 +12,7 @@ namespace camera_utils{
 void turnCameraOn(webots::Camera* camera, int time_step);
 
 
-bool saveImages(webots::Camera* camera, webots::Display* display, std::string destinationFolder, int image_count);
-
+bool saveImages(webots::Camera* camera, webots::Display* display, webots::Node* object, std::string destinationFolder, int image_count);
 
 std::vector<webots::CameraRecognitionObject> getObjectList(webots::Camera *camera);
 

@@ -9,7 +9,7 @@ void turnCameraOn(webots::Camera* camera, int time_step)
     camera->enableRecognitionSegmentation();
 }
 
-bool saveImages(webots::Camera* camera, webots::Display* display, std::string destinationFolder, int image_count)
+bool saveImages(webots::Camera* camera, webots::Display* display, webots::Node* object, std::string destinationFolder, int image_count)
 {
     if(camera->isRecognitionSegmentationEnabled() && camera->hasRecognition() && camera->getRecognitionSamplingPeriod() > 0 )
     {
@@ -23,22 +23,32 @@ bool saveImages(webots::Camera* camera, webots::Display* display, std::string de
 //            auto save1 = camera->saveRecognitionSegmentationImage(filenamesegment, 100);
             auto segmentedImage = display->imageNew(camera->getWidth(),camera->getHeight(), image1, webots::Display::BGRA);
             display->imagePaste(segmentedImage, 0, 0 , false);
-            display->imageDelete(segmentedImage);
+//            display->imageDelete(segmentedImage);
         }
         int nr_of_objects = camera->getRecognitionNumberOfObjects();
-        if(nr_of_objects > 0)
-        {
-        auto image2 = camera->getImage();
-        auto save2 =camera->saveImage(filename, 100);
+        const webots::CameraRecognitionObject* objects = camera->getRecognitionObjects();
+        const webots::CameraRecognitionObject* end = objects + nr_of_objects;
 
-        return true;
+        for(auto it = objects; it != end; ++it)
+        {
+            if( (std::string(it->model) == "object_1"))
+            {
+                auto image2 = camera->getImage();
+                auto save2 =camera->saveImage(filename, 100);
+
+                return true;
+            }
         }
+
         return false;
 
 
     }
 
 }
+
+
+
 
 std::vector<webots::CameraRecognitionObject> getObjectList(webots::Camera* camera)
 {

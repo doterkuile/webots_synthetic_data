@@ -123,6 +123,19 @@ camera_controller/fast:
 	$(MAKE) -f CMakeFiles/camera_controller.dir/build.make CMakeFiles/camera_controller.dir/build
 .PHONY : camera_controller/fast
 
+#=============================================================================
+# Target rules for targets named test_program
+
+# Build rule for target.
+test_program: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 test_program
+.PHONY : test_program
+
+# fast build rule for target.
+test_program/fast:
+	$(MAKE) -f CMakeFiles/test_program.dir/build.make CMakeFiles/test_program.dir/build
+.PHONY : test_program/fast
+
 src/camera_controller.o: src/camera_controller.cpp.o
 
 .PHONY : src/camera_controller.o
@@ -157,6 +170,7 @@ src/camera_utils.o: src/camera_utils.cpp.o
 # target to build an object file
 src/camera_utils.cpp.o:
 	$(MAKE) -f CMakeFiles/camera_controller.dir/build.make CMakeFiles/camera_controller.dir/src/camera_utils.cpp.o
+	$(MAKE) -f CMakeFiles/test_program.dir/build.make CMakeFiles/test_program.dir/src/camera_utils.cpp.o
 .PHONY : src/camera_utils.cpp.o
 
 src/camera_utils.i: src/camera_utils.cpp.i
@@ -166,6 +180,7 @@ src/camera_utils.i: src/camera_utils.cpp.i
 # target to preprocess a source file
 src/camera_utils.cpp.i:
 	$(MAKE) -f CMakeFiles/camera_controller.dir/build.make CMakeFiles/camera_controller.dir/src/camera_utils.cpp.i
+	$(MAKE) -f CMakeFiles/test_program.dir/build.make CMakeFiles/test_program.dir/src/camera_utils.cpp.i
 .PHONY : src/camera_utils.cpp.i
 
 src/camera_utils.s: src/camera_utils.cpp.s
@@ -175,6 +190,7 @@ src/camera_utils.s: src/camera_utils.cpp.s
 # target to generate assembly for a file
 src/camera_utils.cpp.s:
 	$(MAKE) -f CMakeFiles/camera_controller.dir/build.make CMakeFiles/camera_controller.dir/src/camera_utils.cpp.s
+	$(MAKE) -f CMakeFiles/test_program.dir/build.make CMakeFiles/test_program.dir/src/camera_utils.cpp.s
 .PHONY : src/camera_utils.cpp.s
 
 src/object.o: src/object.cpp.o
@@ -211,6 +227,7 @@ src/supervisor_node.o: src/supervisor_node.cpp.o
 # target to build an object file
 src/supervisor_node.cpp.o:
 	$(MAKE) -f CMakeFiles/camera_controller.dir/build.make CMakeFiles/camera_controller.dir/src/supervisor_node.cpp.o
+	$(MAKE) -f CMakeFiles/test_program.dir/build.make CMakeFiles/test_program.dir/src/supervisor_node.cpp.o
 .PHONY : src/supervisor_node.cpp.o
 
 src/supervisor_node.i: src/supervisor_node.cpp.i
@@ -220,6 +237,7 @@ src/supervisor_node.i: src/supervisor_node.cpp.i
 # target to preprocess a source file
 src/supervisor_node.cpp.i:
 	$(MAKE) -f CMakeFiles/camera_controller.dir/build.make CMakeFiles/camera_controller.dir/src/supervisor_node.cpp.i
+	$(MAKE) -f CMakeFiles/test_program.dir/build.make CMakeFiles/test_program.dir/src/supervisor_node.cpp.i
 .PHONY : src/supervisor_node.cpp.i
 
 src/supervisor_node.s: src/supervisor_node.cpp.s
@@ -229,6 +247,7 @@ src/supervisor_node.s: src/supervisor_node.cpp.s
 # target to generate assembly for a file
 src/supervisor_node.cpp.s:
 	$(MAKE) -f CMakeFiles/camera_controller.dir/build.make CMakeFiles/camera_controller.dir/src/supervisor_node.cpp.s
+	$(MAKE) -f CMakeFiles/test_program.dir/build.make CMakeFiles/test_program.dir/src/supervisor_node.cpp.s
 .PHONY : src/supervisor_node.cpp.s
 
 src/transform_utils.o: src/transform_utils.cpp.o
@@ -238,6 +257,7 @@ src/transform_utils.o: src/transform_utils.cpp.o
 # target to build an object file
 src/transform_utils.cpp.o:
 	$(MAKE) -f CMakeFiles/camera_controller.dir/build.make CMakeFiles/camera_controller.dir/src/transform_utils.cpp.o
+	$(MAKE) -f CMakeFiles/test_program.dir/build.make CMakeFiles/test_program.dir/src/transform_utils.cpp.o
 .PHONY : src/transform_utils.cpp.o
 
 src/transform_utils.i: src/transform_utils.cpp.i
@@ -247,6 +267,7 @@ src/transform_utils.i: src/transform_utils.cpp.i
 # target to preprocess a source file
 src/transform_utils.cpp.i:
 	$(MAKE) -f CMakeFiles/camera_controller.dir/build.make CMakeFiles/camera_controller.dir/src/transform_utils.cpp.i
+	$(MAKE) -f CMakeFiles/test_program.dir/build.make CMakeFiles/test_program.dir/src/transform_utils.cpp.i
 .PHONY : src/transform_utils.cpp.i
 
 src/transform_utils.s: src/transform_utils.cpp.s
@@ -256,7 +277,35 @@ src/transform_utils.s: src/transform_utils.cpp.s
 # target to generate assembly for a file
 src/transform_utils.cpp.s:
 	$(MAKE) -f CMakeFiles/camera_controller.dir/build.make CMakeFiles/camera_controller.dir/src/transform_utils.cpp.s
+	$(MAKE) -f CMakeFiles/test_program.dir/build.make CMakeFiles/test_program.dir/src/transform_utils.cpp.s
 .PHONY : src/transform_utils.cpp.s
+
+test_program.o: test_program.cpp.o
+
+.PHONY : test_program.o
+
+# target to build an object file
+test_program.cpp.o:
+	$(MAKE) -f CMakeFiles/test_program.dir/build.make CMakeFiles/test_program.dir/test_program.cpp.o
+.PHONY : test_program.cpp.o
+
+test_program.i: test_program.cpp.i
+
+.PHONY : test_program.i
+
+# target to preprocess a source file
+test_program.cpp.i:
+	$(MAKE) -f CMakeFiles/test_program.dir/build.make CMakeFiles/test_program.dir/test_program.cpp.i
+.PHONY : test_program.cpp.i
+
+test_program.s: test_program.cpp.s
+
+.PHONY : test_program.s
+
+# target to generate assembly for a file
+test_program.cpp.s:
+	$(MAKE) -f CMakeFiles/test_program.dir/build.make CMakeFiles/test_program.dir/test_program.cpp.s
+.PHONY : test_program.cpp.s
 
 # Help Target
 help:
@@ -265,8 +314,9 @@ help:
 	@echo "... clean"
 	@echo "... depend"
 	@echo "... rebuild_cache"
-	@echo "... camera_controller"
 	@echo "... edit_cache"
+	@echo "... camera_controller"
+	@echo "... test_program"
 	@echo "... src/camera_controller.o"
 	@echo "... src/camera_controller.i"
 	@echo "... src/camera_controller.s"
@@ -282,6 +332,9 @@ help:
 	@echo "... src/transform_utils.o"
 	@echo "... src/transform_utils.i"
 	@echo "... src/transform_utils.s"
+	@echo "... test_program.o"
+	@echo "... test_program.i"
+	@echo "... test_program.s"
 .PHONY : help
 
 

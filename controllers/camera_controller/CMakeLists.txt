@@ -13,16 +13,20 @@ set(WEBOTS_HOME "/usr/local/webots/")
 # Link with the Webots controller library.
 find_package(Eigen3 REQUIRED)
 find_package(yaml-cpp REQUIRED)
+find_package(Boost COMPONENTS system filesystem REQUIRED)
+
 link_directories($ENV{WEBOTS_HOME}/lib/controller)
 set (LIBRARIES ${CMAKE_SHARED_LIBRARY_PREFIX}Controller${CMAKE_SHARED_LIBRARY_SUFFIX}; ${CMAKE_SHARED_LIBRARY_PREFIX}CppController${CMAKE_SHARED_LIBRARY_SUFFIX})
-include_directories($ENV{WEBOTS_HOME}/include/controller/c $ENV{WEBOTS_HOME}/include/controller/cpp include ${Eigen_INCLUDE_DIRS} ${yaml-cpp_INCLUDE_DIRS})
+include_directories($ENV{WEBOTS_HOME}/include/controller/c $ENV{WEBOTS_HOME}/include/controller/cpp include ${Eigen_INCLUDE_DIRS} ${yaml-cpp_INCLUDE_DIRS} ${Boost_INCLUDE_DIRS})
 
 # Setup the target executable.
 add_executable(${PROJECT} ${SOURCES})
-target_link_libraries(${PROJECT} ${LIBRARIES} yaml-cpp)
+target_link_libraries(${PROJECT} ${LIBRARIES} yaml-cpp ${Boost_LIBRARIES})
 get_target_property(OUT ${PROJECT} LINK_LIBRARIES)
 message(STATUS ${OUT})
 
+add_executable(test_program test_program.cpp src/supervisor_node.cpp src/camera_utils.cpp src/transform_utils.cpp)
+target_link_libraries(test_program ${LIBRARIES} yaml-cpp ${Boost_LIBRARIES})
 
 
 # Copy the target executable at the right location.

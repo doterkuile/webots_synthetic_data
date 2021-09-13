@@ -34,27 +34,26 @@ int main() {
 
     supervisor_node.stepTime();
 
-    std::string texture = "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.LjRrEK0kHLMFm-MZZhbyaQHaHa%26pid%3DApi&f=1";
 
     while(supervisor_node.checkImageCount())
     {
 
     std::string object_name("TEAPOT_1");
     webots::Node* object = supervisor_node.getObject(object_name);
-    double distance{1.0};
-    eVector2 angles = eVector2(M_PI_4, M_PI_4/2.0);
+
 
 //    object->getField("texture")->setMFString(0, texture);
     supervisor_node.setObjectTexture(object);
     supervisor_node.moveObject(object);
 //    supervisor_node.moveObject(object, newposition, rotation);
     supervisor_node.focusCamera(object);
+    supervisor_node.smallObjectDisplacement(object);
 //    supervisor_node.focusCamera(object, distance, angles);
 //    supervisor_node.moveCamera(newposition, distance, angles);
     supervisor_node.stepTime();
     supervisor_node.stepTime();
 
-    supervisor_node.saveImages();
+    supervisor_node.saveImages(object);
 //        supervisor_node.saveImages();
     }
 

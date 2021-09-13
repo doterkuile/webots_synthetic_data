@@ -21,3 +21,5 @@ DEF TEAPOT_1 object_1 {
   translation 0.02 0 0
   rotation 1 0 0 0
 }
+
+

@@ -9,7 +9,7 @@
 #include <random>
 #include <yaml-cpp/yaml.h>
 #include <fstream>
-
+#include <boost/filesystem.hpp>
 
 
 class Supervisor
@@ -21,14 +21,19 @@ public:
 
     ~Supervisor();
 
-    void saveImages();
+    void saveImages(webots::Node* object);
     int stepTime();
     bool checkImageCount();
 
+    void loadWorld(const std::string &world_file);
+
+    bool checkBottomVisibility(webots::Node* object);
 
     webots::Node* getObject(const std::string &object_name);
+    void setBasePosition(std::string &world);
     bool moveObject(webots::Node* object);
-    bool moveObject(webots::Node* object, double translation[3], double rotation[4]);
+    bool smallObjectDisplacement(webots::Node* object);
+    bool moveObject(webots::Node* object, const double translation[3], const double rotation[4]);
     void setObjectTexture(webots::Node *object);
     void setObjectTexture(webots::Node* object, std::string &texture);
     void focusCamera(webots::Node* object);
@@ -36,6 +41,7 @@ public:
     void moveCamera(double position[3], double distance, eVector2 angles);
     void parseConfig(const std::string &filename);
     void parseTextureFile(const std::string &filename);
+    void setupCamera();
 
 private:
 
@@ -44,6 +50,7 @@ private:
     std::tuple<eVector3, eVector3> object_position_limit_;
     std::tuple<eVector3, eVector3> object_orientation_limit_;
     std::tuple<double, double> camera_distance_limit_;
+    double camera_distance_;
     std::tuple<eVector2, eVector2> camera_orientation_limit_;
     webots::Supervisor* supervisor_;
     webots::Robot* robot_;
@@ -51,14 +58,19 @@ private:
     webots::Node* camera_node_;
     webots::Display* display_;
     int time_step_;
+    eVector3 object_base_position_;
     std::string destination_folder_;
     std::vector<webots::CameraRecognitionObject> object_list_;
     std::string object_label_;
     std::string image_folder_;
     std::string synthetic_image_file_;
+    std::string texture_url_folder_;
     int image_count_;
     int dataset_size_;
     std::vector<std::string> texture_vector_;
+    int camera_size_;
+    std::string world_name_;
+    double position_weight_;
 
 
 

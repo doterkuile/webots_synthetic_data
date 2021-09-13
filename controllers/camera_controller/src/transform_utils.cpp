@@ -42,7 +42,7 @@ void fromTranslationField(const webots::Field *field, eVector3 &vector)
 }
 
 
-void fromRotationField(const double *field, eQuaternion &vector)
+void fromRotationField(const webots::Field *field, Eigen::AngleAxisd &axis)
 {
 ;
     for(int ii{0}; ii <3; ii++)
@@ -100,6 +100,19 @@ void rotMatrixtoAxisAngles(const eMatrixRot &R, double *axisAngle)
     axisAngle[2] = X.axis()[2];
 
     axisAngle[3] = X.angle();
+
+    return;
+}
+
+void axisAnglestoRotMatrix(const double *axisAngle, eMatrixRot &R)
+{
+    Eigen::AngleAxisd X;
+    X.axis()[0] = axisAngle[0];
+    X.axis()[1] = axisAngle[1];
+    X.axis()[2] = axisAngle[2];
+    X.angle() = axisAngle[3];
+
+    R = eMatrixRot(X);
 
     return;
 }

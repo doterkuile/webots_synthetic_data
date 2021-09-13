@@ -29,7 +29,7 @@ void fromTranslationField(const webots::Field *field, eVector3 &vector);
 
 void toRotationField(const eQuaternion &vector, webots::Field *field);
 
-void fromRotationField(const double *field, eQuaternion &vector);
+void fromRotationField(const webots::Field *field, Eigen::AngleAxisd &axis);
 
 void fromSphericaltoCartesian(const double r, const double phi, const double theta, eVector3 &vector);
 
@@ -38,6 +38,8 @@ void fromQuaterniontoAxisAngles(const eQuaternion &q, double *axisAngle);
 void fromRollPitchYawtoAxisAngles(const eVector3 &rpy, double *axisAngle);
 
 void rotMatrixtoAxisAngles(const eMatrixRot &R, double *axisAngle);
+void axisAnglestoRotMatrix(const double *axisAngle, eMatrixRot &R);
+
 
 }
 

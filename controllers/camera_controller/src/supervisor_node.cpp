@@ -17,15 +17,18 @@ time_step_(time_step)
 Supervisor::Supervisor(webots::Supervisor *supervisor, int time_step, const std::string &config_file):
 supervisor_(supervisor),
 time_step_(time_step),
-image_count_(0)
+image_count_(0),
+position_weight_(1.0)
 {
-       camera_ = supervisor_->getCamera("camera");
-       camera_node_ = supervisor_->getFromDef("CAMERA_1");
-       display_ = supervisor_->getDisplay("segmented image display");
-       camera_utils::turnCameraOn(camera_, time_step_);
+//    std::string world = "/home/david/webots/synthetic_data/worlds/test.wbt";
+//    this->loadWorld(world);
+
+//       supervisor_->simulationReset();
        object_label_ = "Teapot";
        destination_folder_ = "/home/david/voxblox_ws/results/images/";
        this->parseConfig(config_file);
+       this->setupCamera();
+
 
 
 
@@ -70,9 +73,13 @@ void Supervisor::parseConfig(const std::string &filename)
                                                       );
 
     synthetic_image_file_ = basenode["synthetic_image_urls"].as<std::string>();
+    texture_url_folder_ = basenode["texture_urls"].as<std::string>();
     image_folder_ = basenode["saved_image_folder"].as<std::string>();
     dataset_size_ = basenode["dataset_size"].as<int>();
+    camera_size_ = basenode["camera_size"].as<int>();
+    world_name_ = basenode["world_name"].as<std::string>();
     parseTextureFile(synthetic_image_file_);
+
 
     return;
 //    YAML::LoadFile("/home/david/webots/synthetic_data/controllers/camera_controller/config");
@@ -92,7 +99,101 @@ void Supervisor::parseTextureFile(const std::string &filename)
         texture_vector_.push_back(tex_url);
     }
 
+    if (boost::filesystem::exists(texture_url_folder_))
+    {
+        boost::filesystem::recursive_directory_iterator iter(texture_url_folder_);
+        boost::filesystem::recursive_directory_iterator end;
 
+        while (iter != end)
+        {
+            std::string file_name = iter->path().string();
+            if (file_name.find(".png") >= 0)
+            {
+            texture_vector_.push_back(file_name);
+            }
+            iter++;
+        }
+//        boost::filesystem::recursive_directory_iterator iter()
+
+    }
+    else
+    {
+        std::cout << "Texture folder with appereances does not exist, using only web urls" << "\n";
+    }
+
+
+
+}
+
+void Supervisor::loadWorld(const std::string &world_file)
+{
+
+    supervisor_->worldLoad(world_file);
+    this->stepTime();
+
+   webots::Camera* camera_ready = supervisor_->getCamera("camera");
+//   supervisor_->si
+   while (!camera_ready)
+   {
+        camera_ready = supervisor_->getCamera("camera");
+   }
+
+   return;
+
+
+}
+
+
+void Supervisor::setBasePosition(std::string &world)
+{
+    std::vector<eVector3> positions;
+    if(world == "test")
+    {
+        positions.push_back(eVector3(0, 0.15, 0));
+        position_weight_ = 1.0;
+    }
+    else if(world == "appartment")
+    {
+
+        positions.push_back(eVector3(2, 0.85, 10.2));
+        positions.push_back(eVector3(2.6, 0.85, 6));
+        positions.push_back(eVector3(3.3, 0.85, 1.5));
+        position_weight_ = 2.0;
+
+
+    }
+    else if(world == "village")
+    {
+
+        positions.push_back(eVector3(20, 0 , -160));
+        positions.push_back(eVector3(540, 0, -200));
+        position_weight_ = 2.0;
+
+    }
+
+    std::uniform_int_distribution<int> distribution(0,positions.size() - 1 );
+    int idx = distribution(Mersenne_);
+    object_base_position_ = positions[idx];
+
+
+}
+
+
+
+
+
+void Supervisor::setupCamera()
+{
+    camera_ = supervisor_->getCamera("camera");
+    camera_node_ = supervisor_->getFromDef("CAMERA_1");
+    display_ = supervisor_->getDisplay("segmented image display");
+//    supervisor_->setCustomData();
+    camera_node_->getField("width")->setSFInt32(camera_size_);
+    camera_node_->getField("height")->setSFInt32(camera_size_);
+    std::cout << camera_->getHeight() << "\n";
+    std::cout << camera_->getHeight() << "\n";
+
+    camera_utils::turnCameraOn(camera_, time_step_);
 }
 
 int Supervisor::stepTime()
@@ -105,9 +206,45 @@ bool Supervisor::checkImageCount()
     return image_count_ < dataset_size_;
 }
 
-void Supervisor::saveImages()
+
+bool Supervisor::checkBottomVisibility(webots::Node* object)
 {
-    if(camera_utils::saveImages(camera_, display_, image_folder_, image_count_))
+    webots::Field* camera_orientation = this->camera_node_->getField("rotation");
+    webots::Field* object_orientation = object->getField("rotation");
+
+
+    eMatrixRot R_c, R_o;
+
+    const double *rot_c = {camera_orientation->getSFRotation()};
+    const double *rot_o = {object_orientation->getSFRotation()};
+
+    transform_utils::axisAnglestoRotMatrix(rot_c, R_c);
+    transform_utils::axisAnglestoRotMatrix(rot_o, R_o);
+
+    eVector3 e_z_c = R_c * eVector3::UnitZ();
+    eVector3 e_y_o = R_o * eVector3::UnitY();
+
+    double angle = acos(e_z_c.dot(e_y_o)/(e_z_c.norm() * e_y_o.norm()))/M_PI;
+
+    if(angle > 0.5)
+    {
+        return true;
+    }
+    else{
+        return false;
+    }
+
+}
+
+
+void Supervisor::saveImages(webots::Node* object)
+{
+    if(!this->checkBottomVisibility(object))
+    {
+        return;
+    }
+
+    if(camera_utils::saveImages(camera_, display_,  object, image_folder_, image_count_))
     {
         image_count_++;
 
@@ -131,12 +268,14 @@ bool Supervisor::moveObject(webots::Node* object)
         return false;
     }
 
+    setBasePosition(world_name_);
+
     double translation[3];
     double orientation[4];
     for(int ii{0}; ii < 3; ii++)
     {
         std::uniform_real_distribution<double> distribution (std::get<0>(object_position_limit_)[ii],std::get<1>(object_position_limit_)[ii]);
-        translation[ii] = distribution(Mersenne_);
+        translation[ii] = object_base_position_[ii] +  position_weight_ * distribution(Mersenne_);
 
     }
     eVector3 rpy;
@@ -154,8 +293,40 @@ bool Supervisor::moveObject(webots::Node* object)
 }
 
 
+bool Supervisor::smallObjectDisplacement(webots::Node *object)
+{
 
-bool Supervisor::moveObject(webots::Node* object, double translation[3], double rotation[4])
+    if(!object)
+    {
+        return false;
+    }
+    webots::Field* object_position = object->getField("translation");
+
+    double translation[3];
+    eVector3 test;
+    transform_utils::fromTranslationField(object_position, test);
+    for(int ii{0}; ii < 3; ii++)
+    {
+         //        Make sure heigth of the object gets not altered
+        if(ii == 1)
+        {
+            translation[ii] = test[ii];
+            continue;
+        }
+        std::uniform_real_distribution<double> distribution (-0.3, 0.3);
+        translation[ii] = test[ii] + camera_distance_* distribution(Mersenne_);
+
+    }
+
+    const double *orientation = object->getField("rotation")->getSFRotation();
+    this->moveObject(object, translation, orientation);
+
+
+    return true;
+}
+
+
+bool Supervisor::moveObject(webots::Node* object, const double translation[3], const double rotation[4])
 {
 //        auto x = position->getMFVec3f(0);
 
@@ -179,10 +350,10 @@ bool Supervisor::moveObject(webots::Node* object, double translation[3], double 
 void Supervisor::focusCamera(webots::Node* object)
 {
     eVector2 camera_angles;
-    double camera_distance;
+//    double camera_distance;
 
     std::uniform_real_distribution<double> distribution1 (std::get<0>(camera_distance_limit_),std::get<1>(camera_distance_limit_));
-    camera_distance = distribution1(Mersenne_);
+    camera_distance_ = position_weight_ * distribution1(Mersenne_);
 
     for(int ii{0}; ii < 2; ii++)
     {
@@ -191,12 +362,13 @@ void Supervisor::focusCamera(webots::Node* object)
 
     }
 
-    this->focusCamera(object, camera_distance, camera_angles);
+    this->focusCamera(object, camera_distance_, camera_angles);
 
     return;
 
 
 }
+
 
 
 void Supervisor::focusCamera(webots::Node* object, const double camera_distance, const eVector2 &camera_angles)
@@ -208,7 +380,9 @@ void Supervisor::focusCamera(webots::Node* object, const double camera_distance,
     transform_utils::fromSphericaltoCartesian(camera_distance, camera_angles[0], camera_angles[1], camera_position);
 
     eMatrixHom transform;
+    eMatrixHom transform2;
     transform.setIdentity();
+    transform2.setIdentity();
 
     auto unitZ = eVector3::UnitZ();
     eVector3 unitY = eVector3::UnitY();
@@ -218,10 +392,12 @@ void Supervisor::focusCamera(webots::Node* object, const double camera_distance,
     eVector3 x_camera = R * eVector3::UnitX();
 
     eVector3 new_x = camera_position.cross(unitY);
+    double costheta = new_x.dot(x_camera)/(x_camera.norm() * new_x.norm());
+
     double theta = acos(new_x.dot(x_camera)/(x_camera.norm() * new_x.norm()));
-    eQuaternion q2 = Eigen::AngleAxisd(0.0, eVector3::UnitX())
-            * Eigen::AngleAxisd(0.0, eVector3::UnitY())
-            * Eigen::AngleAxisd(theta, eVector3::UnitZ());
+
+
+
 
     eVector3 position_temp;
     transform_utils::fromTranslationField(object_position, position_temp);
@@ -229,13 +405,40 @@ void Supervisor::focusCamera(webots::Node* object, const double camera_distance,
     transform.translate(position_temp);
     transform.translate(camera_position);
 
-    transform.rotate(q);
-    transform.rotate(q2);
+    transform2.translate(position_temp);
+    transform2.translate(camera_position);
 
+    transform.rotate(q);
+    transform2.rotate(q);
+
+    eVector3 test_y1 = transform.rotation() * eVector3::UnitY();
+    if(test_y1[0] > 0.0)
+    {
+        theta = -theta;
+    }
+
+    eQuaternion q2 = Eigen::AngleAxisd(0.0, eVector3::UnitX())
+                   * Eigen::AngleAxisd(0.0, eVector3::UnitY())
+                   * Eigen::AngleAxisd(theta, eVector3::UnitZ());
+
+
+    eQuaternion q3 = Eigen::AngleAxisd(0.0, eVector3::UnitX())
+                   * Eigen::AngleAxisd(0.0, eVector3::UnitY())
+                   * Eigen::AngleAxisd(-theta, eVector3::UnitZ());
+
+
+    transform.rotate(q2);
+    transform2.rotate(q3);
+
+    eVector3 test_y2 = transform.rotation() * eVector3::UnitY();
+
+    eVector3 test_y3 = transform2.rotation() * eVector3::UnitY();
 
 
     double final_position[3];
     double final_orientation[4];
+    eVector3 camera_pos = transform.translation();
+
     transform_utils::toField(transform, final_position,final_orientation);
 
     camera_node_->getField("translation")->setSFVec3f(final_position);
@@ -259,8 +462,13 @@ void Supervisor::setObjectTexture(webots::Node* object)
 
 void Supervisor::setObjectTexture(webots::Node* object, std::string &texture)
 {
-
    object->getField("texture")->setMFString(0, texture);
+
+//   supervisor_->
+//   webots::Node *node = object->findNode("appearance");
+//   node->loadState("Asphalt");
+
+
 
 }
 
