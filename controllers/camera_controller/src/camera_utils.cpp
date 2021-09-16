@@ -13,17 +13,14 @@ bool saveImages(webots::Camera* camera, webots::Display* display, webots::Node* 
 {
     if(camera->isRecognitionSegmentationEnabled() && camera->hasRecognition() && camera->getRecognitionSamplingPeriod() > 0 )
     {
-        std::string filenamesegment = destinationFolder + "segmentationimage_" + std::to_string(image_count) + ".jpg";
         std::string filename = destinationFolder + "image_" + std::to_string(image_count) + ".jpg";
 
 
         auto image1 = camera->getRecognitionSegmentationImage();
         if( image1)
         {
-//            auto save1 = camera->saveRecognitionSegmentationImage(filenamesegment, 100);
             auto segmentedImage = display->imageNew(camera->getWidth(),camera->getHeight(), image1, webots::Display::BGRA);
             display->imagePaste(segmentedImage, 0, 0 , false);
-//            display->imageDelete(segmentedImage);
         }
         int nr_of_objects = camera->getRecognitionNumberOfObjects();
         const webots::CameraRecognitionObject* objects = camera->getRecognitionObjects();
@@ -35,8 +32,10 @@ bool saveImages(webots::Camera* camera, webots::Display* display, webots::Node* 
             {
                 auto image2 = camera->getImage();
                 auto save2 =camera->saveImage(filename, 100);
-
-                return true;
+                if (save2 == 0)
+                {
+                    return true;
+                }
             }
         }
 

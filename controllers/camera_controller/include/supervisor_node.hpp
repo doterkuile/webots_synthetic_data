@@ -20,17 +20,21 @@ public:
 
 
     ~Supervisor();
-
-    void saveImages(webots::Node* object);
+    bool saveImages(webots::Node* object);
     int stepTime();
     bool checkImageCount();
 
     void loadWorld(const std::string &world_file);
+    void reloadWorld(const std::string &world_file);
+
 
     bool checkBottomVisibility(webots::Node* object);
 
     webots::Node* getObject(const std::string &object_name);
+    webots::Node* getAppearance(webots::Node* object);
+
     void setBasePosition(std::string &world);
+    void setLighting();
     bool moveObject(webots::Node* object);
     bool smallObjectDisplacement(webots::Node* object);
     bool moveObject(webots::Node* object, const double translation[3], const double rotation[4]);
@@ -41,7 +45,10 @@ public:
     void moveCamera(double position[3], double distance, eVector2 angles);
     void parseConfig(const std::string &filename);
     void parseTextureFile(const std::string &filename);
+    void parseLightingFile(const std::string &filename);
     void setupCamera();
+    void addObject(const std::string &object_name);
+    void removeObject(const std::string &object_name);
 
 private:
 
@@ -64,10 +71,12 @@ private:
     std::string object_label_;
     std::string image_folder_;
     std::string synthetic_image_file_;
+    std::string lighting_file_;
     std::string texture_url_folder_;
     int image_count_;
     int dataset_size_;
     std::vector<std::string> texture_vector_;
+    std::vector<std::string> lighting_vector_;
     int camera_size_;
     std::string world_name_;
     double position_weight_;

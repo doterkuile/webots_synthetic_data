@@ -29,6 +29,7 @@ std::mt19937 Supervisor::Mersenne_{
 int main() {
 
     std::string config_file = "/home/david/webots/synthetic_data/controllers/camera_controller/config/data_generator.yaml";
+    std::string object_name("TEAPOT_2");
 
     Supervisor supervisor_node(new webots::Supervisor(), TIME_STEP, config_file);
 
@@ -38,23 +39,26 @@ int main() {
     while(supervisor_node.checkImageCount())
     {
 
-    std::string object_name("TEAPOT_1");
+    bool image_succes = false;
+    supervisor_node.addObject(object_name);
     webots::Node* object = supervisor_node.getObject(object_name);
+    supervisor_node.setLighting();
+    while(!image_succes)
+    {
 
+        supervisor_node.moveObject(object);
+        supervisor_node.focusCamera(object);
+        supervisor_node.smallObjectDisplacement(object);
+        supervisor_node.stepTime();
+        supervisor_node.stepTime();
 
-//    object->getField("texture")->setMFString(0, texture);
-    supervisor_node.setObjectTexture(object);
-    supervisor_node.moveObject(object);
-//    supervisor_node.moveObject(object, newposition, rotation);
-    supervisor_node.focusCamera(object);
-    supervisor_node.smallObjectDisplacement(object);
-//    supervisor_node.focusCamera(object, distance, angles);
-//    supervisor_node.moveCamera(newposition, distance, angles);
+        image_succes = supervisor_node.saveImages(object);
+    }
+
     supervisor_node.stepTime();
     supervisor_node.stepTime();
+    supervisor_node.removeObject(object_name);
 
-    supervisor_node.saveImages(object);
-//        supervisor_node.saveImages();
     }
 
 

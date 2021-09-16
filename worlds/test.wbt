@@ -6,20 +6,11 @@ Viewpoint {
   orientation 0.26979543100649717 -0.867101603850385 -0.41874244352359163 3.535870715053545
   position 0.18458795331203726 0.8381793912394556 -0.5796467468309009
 }
-TexturedBackground {
+DEF BACKGROUND_1 TexturedBackground {
+  texture "noon_stormy_empty"
 }
-TexturedBackgroundLight {
-}
-RectangleArena {
-  translation 0 -0.1 0
+DEF BG_LIGHT_1 TexturedBackgroundLight {
+  texture "noon_stormy_empty"
 }
 DEF CAMERA_1 image_camera {
 }
-
-
-DEF TEAPOT_1 object_1 {
-  translation 0.02 0 0
-  rotation 1 0 0 0
-}
-
-

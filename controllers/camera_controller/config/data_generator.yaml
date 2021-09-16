@@ -6,12 +6,12 @@ object_position_limit:
 
 
 object_orientation_limit: 
-  min: [-0.25, -0.25, -0.25]
-  max: [0.25, 0.25, 0.25]
+  min: [-0.25, -1, -0.25]
+  max: [0.25, 1, 0.25]
 
 camera_distance_limit:
   min: 0.2
-  max: 1.0
+  max: 3.0
 
 camera_orientation_limit: 
   min: [-0.25, -0.25]
@@ -24,9 +24,11 @@ world_name: "test"
 
 
 synthetic_image_urls: "config/synthetic_urls.txt"
-texture_urls: "/usr/local/webots/projects/appearances/protos/icons/"
+lighting_file: "config/lighting.txt"
+
+texture_urls: "/usr/local/webots/projects/appearances/protos/"
 
 
 saved_image_folder: "/home/david/webots/synthetic_data/images/"
 
-dataset_size: 10
+dataset_size: 40

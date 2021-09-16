@@ -25,10 +25,6 @@ DEF CAMERA_1 image_camera {
 }
 
 
-DEF TEAPOT_1 object_1 {
-  translation 2.98 0.58 9.09
-  rotation 1 0 0 0
-}
 
 DEF ROOF Group {
   children [

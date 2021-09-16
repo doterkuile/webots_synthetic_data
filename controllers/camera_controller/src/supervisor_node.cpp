@@ -20,7 +20,6 @@ time_step_(time_step),
 image_count_(0),
 position_weight_(1.0)
 {
-//    std::string world = "/home/david/webots/synthetic_data/worlds/test.wbt";
 //    this->loadWorld(world);
 
 //       supervisor_->simulationReset();
@@ -32,6 +31,9 @@ position_weight_(1.0)
 
 
 
+
+
+
 }
 
 Supervisor::~Supervisor()
@@ -39,6 +41,29 @@ Supervisor::~Supervisor()
     delete supervisor_;
 }
 
+void Supervisor::addObject(const std::string &object_name)
+{
+        webots::Node* test = supervisor_->getRoot();
+        webots::Field* field = test->getField("children");
+
+        std::uniform_int_distribution<int> distribution(0,texture_vector_.size() - 1);
+        int idx = distribution(Mersenne_);
+        std::string texture = texture_vector_[idx];
+
+        std::string input = "DEF " + object_name + " object_1 { translation 0.0 0 0 rotation 1 0 0 0 texture " + texture +"}";
+        field->importMFNodeFromString(0, input);
+
+
+}
+
+
+void Supervisor::removeObject(const std::string &object_name)
+{
+    webots::Node* object = supervisor_->getFromDef(object_name);
+    object->remove();
+
+    return;
+}
 void Supervisor::parseConfig(const std::string &filename)
 {
     YAML::Node basenode = YAML::LoadFile(filename);
@@ -73,17 +98,22 @@ void Supervisor::parseConfig(const std::string &filename)
                                                       );
 
     synthetic_image_file_ = basenode["synthetic_image_urls"].as<std::string>();
+    lighting_file_ = basenode["lighting_file"].as<std::string>();
+
     texture_url_folder_ = basenode["texture_urls"].as<std::string>();
     image_folder_ = basenode["saved_image_folder"].as<std::string>();
     dataset_size_ = basenode["dataset_size"].as<int>();
     camera_size_ = basenode["camera_size"].as<int>();
     world_name_ = basenode["world_name"].as<std::string>();
     parseTextureFile(synthetic_image_file_);
+    parseLightingFile(lighting_file_);
 
 
     return;
 //    YAML::LoadFile("/home/david/webots/synthetic_data/controllers/camera_controller/config");
 }
+
+
 
 
 void Supervisor::parseTextureFile(const std::string &filename)
@@ -96,7 +126,10 @@ void Supervisor::parseTextureFile(const std::string &filename)
 
     while (inFile >> tex_url)
     {
-        texture_vector_.push_back(tex_url);
+
+        std::string input_string = " PBRAppearance{ metalness 0 baseColorMap ImageTexture { url \"" +  tex_url + "\" }}";
+
+        texture_vector_.push_back(input_string);
     }
 
     if (boost::filesystem::exists(texture_url_folder_))
@@ -107,9 +140,29 @@ void Supervisor::parseTextureFile(const std::string &filename)
         while (iter != end)
         {
             std::string file_name = iter->path().string();
-            if (file_name.find(".png") >= 0)
+            std::string sub_str = ".proto";
+            std::size_t pos = file_name.find(sub_str);
+
+
+
+            if (pos !=std::string::npos)
             {
-            texture_vector_.push_back(file_name);
+
+                file_name.erase(pos, sub_str.length());
+                file_name.erase(0, texture_url_folder_.length());
+                std::string input_string = file_name + "{}";
+
+                auto material = file_name.find("PerforatedMetal");
+
+                if((material != std::string::npos) || (file_name.find("WireFence") !=std::string::npos))
+                {
+                    // Filter out textures with holes
+                    iter++;
+                    continue;
+                }
+
+
+                texture_vector_.push_back(input_string);
             }
             iter++;
         }
@@ -125,6 +178,57 @@ void Supervisor::parseTextureFile(const std::string &filename)
 
 }
 
+
+void Supervisor::parseLightingFile(const std::string &filename)
+{
+    std::ifstream inFile;
+    std::string tex_url;
+
+    inFile.open(filename.c_str());
+
+
+
+    while (inFile >> tex_url)
+    {
+
+        std::string input_string = tex_url;
+
+        lighting_vector_.push_back(input_string);
+    }
+
+    return;
+
+}
+
+
+void Supervisor::setLighting()
+{
+    if(world_name_ == "appartment")
+    {
+        return;
+    }
+
+    webots::Node* background = supervisor_->getFromDef("BACKGROUND_1");
+    webots::Node* background_light = supervisor_->getFromDef("BG_LIGHT_1");
+
+
+    std::uniform_int_distribution<int> distribution(0, lighting_vector_.size()-1);
+    int idx = distribution(Mersenne_);
+    std::string light_name = lighting_vector_[idx];
+
+    webots::Field* bg_texture = background->getField("texture");
+    webots::Field* bg_light_texture = background_light->getField("texture");
+
+    bg_texture->setSFString(light_name);
+    bg_light_texture->setSFString(light_name);
+
+
+
+
+
+}
+
+
 void Supervisor::loadWorld(const std::string &world_file)
 {
 
@@ -139,6 +243,17 @@ void Supervisor::loadWorld(const std::string &world_file)
    }
 
    return;
+
+
+}
+
+void Supervisor::reloadWorld(const std::string &world_file)
+{
+    supervisor_->worldReload();
+//    delete supervisor_;
+//    supervisor_ = new webots::Supervisor();
+    this->stepTime();
+    return;
 
 
 }
@@ -188,10 +303,10 @@ void Supervisor::setupCamera()
     camera_node_ = supervisor_->getFromDef("CAMERA_1");
     display_ = supervisor_->getDisplay("segmented image display");
 //    supervisor_->setCustomData();
-    camera_node_->getField("width")->setSFInt32(camera_size_);
-    camera_node_->getField("height")->setSFInt32(camera_size_);
-    std::cout << camera_->getHeight() << "\n";
-    std::cout << camera_->getHeight() << "\n";
+//    camera_node_->getField("width")->setSFInt32(camera_size_);
+//    camera_node_->getField("height")->setSFInt32(camera_size_);
+//    std::cout << camera_->getHeight() << "\n";
+//    std::cout << camera_->getHeight() << "\n";
 
     camera_utils::turnCameraOn(camera_, time_step_);
 }
@@ -237,25 +352,40 @@ bool Supervisor::checkBottomVisibility(webots::Node* object)
 }
 
 
-void Supervisor::saveImages(webots::Node* object)
+bool Supervisor::saveImages(webots::Node* object)
 {
     if(!this->checkBottomVisibility(object))
     {
-        return;
+        return false;
     }
 
     if(camera_utils::saveImages(camera_, display_,  object, image_folder_, image_count_))
     {
         image_count_++;
+        return true;
 
     }
 
-    return;
+    return false;
 }
 
 webots::Node* Supervisor::getObject(const std::string &object_name)
 {
     webots::Node* object = supervisor_->getFromDef(object_name);
+
+    return object;
+}
+
+webots::Node* Supervisor::getAppearance(webots::Node* object)
+{
+    webots::Field* appearance = object->getField("texture");
+
+    webots::Node* root = supervisor_->getRoot();
+
+//    appearance->importSFNode("/usr/local/webots/projects/appearances/protos/Asphalt.proto");
+    appearance->importSFNodeFromString("OldPlywood{}");
+    this->stepTime();
+//    appearance->
 
     return object;
 }
@@ -453,7 +583,7 @@ void Supervisor::focusCamera(webots::Node* object, const double camera_distance,
 
 void Supervisor::setObjectTexture(webots::Node* object)
 {
-    std::uniform_int_distribution<int> distribution(0,texture_vector_.size());
+    std::uniform_int_distribution<int> distribution(0,texture_vector_.size()-1);
     int idx = distribution(Mersenne_);
     std::string texture = texture_vector_[idx];
 
@@ -462,12 +592,27 @@ void Supervisor::setObjectTexture(webots::Node* object)
 
 void Supervisor::setObjectTexture(webots::Node* object, std::string &texture)
 {
-   object->getField("texture")->setMFString(0, texture);
 
+   webots::Field* appearance = object->getField("texture");
+//   webots::Field* appearance2 = object->getProtoField("texture");
+   webots::Node* node = appearance->getSFNode();
+   appearance->getTypeName();
+
+   if(node)
+   {
+       appearance->removeSF();
+   }
+
+   appearance->importSFNodeFromString(texture);
+//   std::cout << node->getBaseTypeName() << '\n';
+
+//   webots::Node* node = appearance->getSFNode();
+
+//   node->remove();
 //   supervisor_->
-//   webots::Node *node = object->findNode("appearance");
-//   node->loadState("Asphalt");
-
+   this->stepTime();
+//   appearance = object->getField("texture");
+//   appearance->importSFNodeFromString(texture);
 
 
 }

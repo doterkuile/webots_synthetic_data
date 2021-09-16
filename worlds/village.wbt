@@ -75,9 +75,9 @@ Viewpoint {
   lensFlare LensFlare {
   }
 }
-TexturedBackground {
+DEF BACKGROUND_1 TexturedBackground {
 }
-TexturedBackgroundLight {
+DEF BG_LIGHT_1 TexturedBackgroundLight {
 }
 Fog {
   color 0.93 0.96 1
@@ -96,19 +96,8 @@ Floor {
     metalness 0
   }
 }
-
-
 DEF CAMERA_1 image_camera {
 }
-
-
-DEF TEAPOT_1 object_1 {
-  translation 0.02 0 0
-  rotation 1 0 0 0
-}
-
-
-
 Crossroad {
   translation 5.672665 0.01 -13.963351
   id "-720"
@@ -604,7 +593,7 @@ Crossroad {
     "-2088_4"
   ]
 }
-Crossroad {
+DEF BG_LIGHT_1 Crossroad {
   translation 314.17099 0.01 -235.92366
   name "crossroad(20)"
   id "-1260"
@@ -4364,6 +4353,7 @@ GenericTrafficLight {
   startGreen FALSE
   greenTime 30
   redTime 30
+  state "red"
 }
 GenericTrafficLight {
   translation 473.15557 7.1054274e-15 -321.89109
@@ -4371,26 +4361,31 @@ GenericTrafficLight {
   name "generic traffic light(1)"
   greenTime 30
   redTime 30
+  state "green"
 }
 GenericTrafficLight {
   translation 488.24625 7.1054274e-15 -409.06921
   rotation 0 -1 0 3.40339
   name "generic traffic light(2)"
+  state "green"
 }
 GenericTrafficLight {
   translation 401.4269 1.15818e-12 -337.44037
   rotation 0 -1 0 1.83259
   name "generic traffic light(3)"
+  state "green"
 }
 GenericTrafficLight {
   translation 388.8035 1.15818e-12 -332.00217
   rotation 0 1 0 1.0472
   name "generic traffic light(4)"
+  state "green"
 }
 GenericTrafficLight {
   translation 479.95684 4.9737992e-14 -418.5505
   rotation 0 1 0 5.75959
   name "generic traffic light(5)"
+  state "green"
 }
 GenericTrafficLight {
   translation 473.83715 7.1054274e-15 -310.71562
@@ -4399,16 +4394,19 @@ GenericTrafficLight {
   startGreen FALSE
   greenTime 30
   redTime 30
+  state "red"
 }
 GenericTrafficLight {
   translation 538.74879 -4.61853e-14 -101.0593
   rotation 0 -1 0 1.309
   name "generic traffic light(7)"
+  state "green"
 }
 GenericTrafficLight {
   translation 529.07497 -3.90799e-14 -89.074971
   rotation 0 1 0 2.09439
   name "generic traffic light(8)"
+  state "green"
 }
 GenericTrafficLight {
   translation 460.50299 3.5527174e-15 -310.92784
@@ -4416,6 +4414,7 @@ GenericTrafficLight {
   name "generic traffic light(9)"
   greenTime 30
   redTime 30
+  state "green"
 }
 StreetLight {
   translation 605.341 -5.68434e-14 -158.398
