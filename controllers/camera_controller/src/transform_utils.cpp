@@ -42,6 +42,9 @@ void fromTranslationField(const webots::Field *field, eVector3 &vector)
 }
 
 
+
+
+
 void fromRotationField(const webots::Field *field, Eigen::AngleAxisd &axis)
 {
 ;

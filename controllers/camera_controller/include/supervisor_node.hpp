@@ -32,6 +32,8 @@ public:
 
     webots::Node* getObject(const std::string &object_name);
     webots::Node* getAppearance(webots::Node* object);
+    webots::Node* getCameraNode();
+    bool hasContactPoints(webots::Node* object);
 
     void setBasePosition(std::string &world);
     void setLighting();

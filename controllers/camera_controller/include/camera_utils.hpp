@@ -18,7 +18,7 @@ std::vector<webots::CameraRecognitionObject> getObjectList(webots::Camera *camer
 
 void moveCamera(webots::Node *camera_node, const eVector3 &objectPosition, const double distance, const eVector2 &angles);
 
-
+bool checkObjectSize(webots::CameraRecognitionObject object, webots::Camera *camera);
 
 
 

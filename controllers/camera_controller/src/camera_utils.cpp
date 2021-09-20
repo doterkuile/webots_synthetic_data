@@ -25,11 +25,11 @@ bool saveImages(webots::Camera* camera, webots::Display* display, webots::Node* 
         int nr_of_objects = camera->getRecognitionNumberOfObjects();
         const webots::CameraRecognitionObject* objects = camera->getRecognitionObjects();
         const webots::CameraRecognitionObject* end = objects + nr_of_objects;
-
         for(auto it = objects; it != end; ++it)
         {
-            if( (std::string(it->model) == "object_1"))
+            if( (std::string(it->model) == "object_1") && checkObjectSize(*it, camera))
             {
+
                 auto image2 = camera->getImage();
                 auto save2 =camera->saveImage(filename, 100);
                 if (save2 == 0)
@@ -46,6 +46,24 @@ bool saveImages(webots::Camera* camera, webots::Display* display, webots::Node* 
 
 }
 
+
+bool checkObjectSize(webots::CameraRecognitionObject object, webots::Camera *camera)
+{
+
+
+    int object_size = object.size_on_image[0] * object.size_on_image[1];
+    int image_size = camera->getHeight() * camera->getWidth();
+    double ratio = static_cast<double>(object_size)/static_cast<double>(image_size);
+
+    if (ratio > 0.1)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
 
 
 

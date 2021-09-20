@@ -49,8 +49,17 @@ void Supervisor::addObject(const std::string &object_name)
         std::uniform_int_distribution<int> distribution(0,texture_vector_.size() - 1);
         int idx = distribution(Mersenne_);
         std::string texture = texture_vector_[idx];
+        std::string physics;
+        if(world_name_ == "test")
+        {
+            physics = "physics NULL";
+        }
+        else
+        {
+            physics = "physics  Physics { }";
+        }
 
-        std::string input = "DEF " + object_name + " object_1 { translation 0.0 0 0 rotation 1 0 0 0 texture " + texture +"}";
+        std::string input = "DEF " + object_name + " object_1 { translation 0.0 0 0 rotation 1 0 0 0 texture " + texture + physics + "}";
         field->importMFNodeFromString(0, input);
 
 
@@ -273,16 +282,16 @@ void Supervisor::setBasePosition(std::string &world)
         positions.push_back(eVector3(2, 0.85, 10.2));
         positions.push_back(eVector3(2.6, 0.85, 6));
         positions.push_back(eVector3(3.3, 0.85, 1.5));
-        position_weight_ = 2.0;
+        position_weight_ = 1.0;
 
 
     }
     else if(world == "village")
     {
 
-        positions.push_back(eVector3(20, 0 , -160));
-        positions.push_back(eVector3(540, 0, -200));
-        position_weight_ = 2.0;
+        positions.push_back(eVector3(20, 0.15 , -160));
+        positions.push_back(eVector3(540, 0.15, -200));
+        position_weight_ = 1.0;
 
     }
 
@@ -376,6 +385,31 @@ webots::Node* Supervisor::getObject(const std::string &object_name)
     return object;
 }
 
+bool Supervisor::hasContactPoints(webots::Node *object)
+
+{        int cp_list{0};
+
+
+        if(object->getContactPoints(true, &cp_list))
+        {
+            return true;
+        }
+        else if(world_name_ == "test")
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+
+}
+
+webots::Node* Supervisor::getCameraNode()
+{
+    return camera_node_;
+}
+
 webots::Node* Supervisor::getAppearance(webots::Node* object)
 {
     webots::Field* appearance = object->getField("texture");
@@ -418,7 +452,6 @@ bool Supervisor::moveObject(webots::Node* object)
     transform_utils::fromRollPitchYawtoAxisAngles(rpy, orientation);
 
     this->moveObject(object, translation, orientation);
-
     return true;
 }
 
@@ -431,6 +464,7 @@ bool Supervisor::smallObjectDisplacement(webots::Node *object)
         return false;
     }
     webots::Field* object_position = object->getField("translation");
+//    webots::Field* camera_pos = ->getField("translation");)
 
     double translation[3];
     eVector3 test;
@@ -438,12 +472,12 @@ bool Supervisor::smallObjectDisplacement(webots::Node *object)
     for(int ii{0}; ii < 3; ii++)
     {
          //        Make sure heigth of the object gets not altered
-        if(ii == 1)
+        if(ii == 2)
         {
             translation[ii] = test[ii];
             continue;
         }
-        std::uniform_real_distribution<double> distribution (-0.3, 0.3);
+        std::uniform_real_distribution<double> distribution (-0.2, 0.2);
         translation[ii] = test[ii] + camera_distance_* distribution(Mersenne_);
 
     }

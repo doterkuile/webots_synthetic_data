@@ -47,17 +47,34 @@ int main() {
     {
 
         supervisor_node.moveObject(object);
+//        supervisor_node.stepTime();
+
+
+
+//        webots::ContactPoint* cp = ;
+
+        while (!supervisor_node.hasContactPoints(object))
+        {
+            supervisor_node.stepTime();
+//            cp = object->getContactPoints(true, &cp_list);
+        }
+
         supervisor_node.focusCamera(object);
-        supervisor_node.smallObjectDisplacement(object);
-        supervisor_node.stepTime();
+
+        supervisor_node.smallObjectDisplacement(supervisor_node.getCameraNode());
         supervisor_node.stepTime();
 
         image_succes = supervisor_node.saveImages(object);
+//        supervisor_node.stepTime();
+
+//        cp = nullptr;
     }
 
     supervisor_node.stepTime();
-    supervisor_node.stepTime();
+//    supervisor_node.stepTime();
     supervisor_node.removeObject(object_name);
+    supervisor_node.stepTime();
+
 
     }
 

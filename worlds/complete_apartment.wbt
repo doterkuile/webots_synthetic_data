@@ -8,8 +8,8 @@ WorldInfo {
   coordinateSystem "NUE"
 }
 Viewpoint {
-  orientation -0.9653355746883712 0.2014160891022787 0.16600839524498465 0.9647161791657932
-  position 9.511530078976037 21.102966516545496 20.443385646664467
+  orientation -0.681174975016095 -0.6588302204510336 -0.31928575607481297 1.3867782327013551
+  position 0.3755882149029506 6.721273237662511 3.4835319988415687
   exposure 0.5
   ambientOcclusionRadius 1
 }
@@ -20,12 +20,8 @@ TexturedBackground {
     0.2 0.2 0.2
   ]
 }
-
 DEF CAMERA_1 image_camera {
 }
-
-
-
 DEF ROOF Group {
   children [
     Transform {
@@ -1366,18 +1362,21 @@ CeilingLight {
   pointLightColor 0.913725 0.72549 0.431373
   pointLightIntensity 3
   pointLightRadius 3.9
+  pointLightCastShadows TRUE
 }
 CeilingLight {
   translation 1.47922 2.4 10.1237
   name "ceiling light 2"
   pointLightIntensity 2
   pointLightRadius 4
+  pointLightCastShadows TRUE
 }
 CeilingLight {
   translation 4.344069 2.4 7.411517
   name "ceiling light 2(5)"
   pointLightIntensity 4
   pointLightRadius 10
+  pointLightCastShadows TRUE
 }
 CeilingLight {
   translation 7.551591999999999 2.4 1.7941829999999999
@@ -1385,6 +1384,7 @@ CeilingLight {
   pointLightColor 0.447059 0.623529 0.811765
   pointLightIntensity 3
   pointLightRadius 4
+  pointLightCastShadows TRUE
 }
 CeilingLight {
   translation 7.551591999999999 2.4 5.364183
@@ -1392,12 +1392,14 @@ CeilingLight {
   pointLightColor 0.447059 0.623529 0.811765
   pointLightIntensity 3
   pointLightRadius 4
+  pointLightCastShadows TRUE
 }
 CeilingLight {
   translation 10.602905999999999 2.4 7.622198
   name "ceiling light 2(3)"
   pointLightIntensity 3
   pointLightRadius 5
+  pointLightCastShadows TRUE
 }
 CeilingLight {
   translation 10.56734 2.4 1.945004
@@ -1405,16 +1407,19 @@ CeilingLight {
   pointLightColor 0.913725 0.72549 0.431373
   pointLightIntensity 3
   pointLightRadius 5
+  pointLightCastShadows TRUE
 }
 FloorLight {
   translation 0.49615699999999996 0 4.7700309999999995
   pointLightColor 0.913725 0.72549 0.431373
   pointLightRadius 3
+  pointLightCastShadows TRUE
 }
 FloorLight {
   translation 12.404582999999999 0 0.590395
   name "floor light(1)"
   pointLightRadius 2
+  pointLightCastShadows TRUE
 }
 Book {
   translation 11.8186 0.41 9.49841
@@ -2006,4 +2011,3 @@ DEF TREES Transform {
     }
   ]
 }
-
