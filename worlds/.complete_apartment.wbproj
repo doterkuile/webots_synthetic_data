@@ -5,9 +5,9 @@ sceneTreePerspectives: 000000ff0000000100000002000000c00000011f01000000020100000
 maximizedDockId: -1
 centralWidgetVisible: 1
 orthographicViewHeight: 1
-textFiles: 0 "worlds/complete_apartment.wbt" "protos/image_camera.proto"
+textFiles: 2 "worlds/complete_apartment.wbt" "protos/image_camera.proto" "protos/object_1.proto"
 consoles: Console:All:All
 renderingDevicePerspectives: laptop:display;0;1;0;0
-renderingDevicePerspectives: robot:camera;1;0.96875;0;0
-renderingDevicePerspectives: robot:segmented image display;1;0.258333;0;0
+renderingDevicePerspectives: robot:camera;1;1;0;0
+renderingDevicePerspectives: robot:segmented image display;0;1;0;0
 renderingDevicePerspectives: television:display;0;2.57813;0;0.00925926

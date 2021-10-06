@@ -111,9 +111,11 @@ void Supervisor::parseConfig(const std::string &filename)
 
     texture_url_folder_ = basenode["texture_urls"].as<std::string>();
     image_folder_ = basenode["saved_image_folder"].as<std::string>();
-    dataset_size_ = basenode["dataset_size"].as<int>();
     camera_size_ = basenode["camera_size"].as<int>();
     world_name_ = basenode["world_name"].as<std::string>();
+    image_count_ = basenode["start_image_count"].as<int>();
+    dataset_size_ = image_count_ + basenode["dataset_size"].as<int>();
+
     parseTextureFile(synthetic_image_file_);
     parseLightingFile(lighting_file_);
 

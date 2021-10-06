@@ -10,8 +10,8 @@ object_orientation_limit:
   max: [0.25, 1, 0.25]
 
 camera_distance_limit:
-  min: 0.4
-  max: 1.0
+  min: 0.2
+  max: 0.7
 
 camera_orientation_limit: 
   min: [-0.25, -0.25]
@@ -20,7 +20,7 @@ camera_orientation_limit:
 
 camera_size: 224
 
-world_name: "appartment"
+world_name: "village"
 
 
 synthetic_image_urls: "config/synthetic_urls.txt"
@@ -31,4 +31,5 @@ texture_urls: "/usr/local/webots/projects/appearances/protos/"
 
 saved_image_folder: "/home/david/webots/synthetic_data/images/"
 
-dataset_size: 30
+start_image_count: 240
+dataset_size: 110
